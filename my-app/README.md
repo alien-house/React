@@ -1,6 +1,7 @@
 I was stuck on this issue.
 This post helped me! thx!
-http://stackoverflow.com/questions/39959900/npm-start-error-with-create-react-app/39960523
+[npm start error with create-react-app](http://stackoverflow.com/questions/39959900/npm-start-error-with-create-react-app/39960523).
+
 
 ___
 
