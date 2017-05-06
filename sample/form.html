@@ -8,7 +8,7 @@
     <div id="app"></div>
     <script type="text/jsx">
 
-     // 親：<Parent />の定義
+     // <Parent /> is defined
      var Parent = React.createClass({
        // State（※状態は親が管理）
        // この値はブラウザを閉じたり、リロードするまでは保持される
@@ -21,7 +21,7 @@
 
        // State(textVal)を変更
        setStateTextVal: function(textVal) {
-         this.setState({ textVal: textVal }); 
+         this.setState({ textVal: textVal });
        },
 
        // State(children)を変更
