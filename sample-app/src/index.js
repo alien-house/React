@@ -24,8 +24,8 @@ ReactDOM.render(
 
 		  <hr/>
 
-		  <Route path="/archives" component={Archives}/>
-		  <Route path="/settings" component={Settings}/>
+		  <Route path="/archives/:article" name="archives" component={Archives}/>
+		  <Route path="/settings" name="settings" component={Settings}/>
 		</div>
 
      </Router>,
