@@ -1,13 +1,5 @@
 import React from 'react';
 import * as firebase from "firebase";
-var config = {
-  apiKey: "AIzaSyCz4_2OhpXg6TPdYWRXnt330dRyD5q1jFA",
-  authDomain: "programming-473ea.firebaseapp.com",
-  databaseURL: "https://programming-473ea.firebaseio.com",
-  storageBucket: "programming-473ea.appspot.com",
-};
-firebase.initializeApp(config);
-
 export default class Register extends React.Component {
 	constructor(){
 		super();
@@ -15,9 +7,7 @@ export default class Register extends React.Component {
 
 		this.handleChange = this.handleChange.bind(this);
 		this.handleSubmit = this.handleSubmit.bind(this);
-		this.state = {
-			speed: 10
-		};
+		this.state = {};
 	}
 	// only once
 	componentDidMount(){
@@ -91,10 +81,9 @@ export default class Register extends React.Component {
 		return (
 			<div>
 			<h1>Register</h1>
-			<p>{this.state.speed}</p>
 			<form onSubmit={this.handleSubmit}>
 			<dl>
-				<dt>id</dt>
+				<dt>email</dt>
 				<dd><input type="text" name="email" value={this.state.value} onChange={this.handleChange} /></dd>
 				<dt>pass</dt>
 				<dd><input type="text" name="password" value={this.state.value} onChange={this.handleChange} /></dd>

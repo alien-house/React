@@ -8,6 +8,15 @@ import {
 import Register from "./pages/Register"
 import SignIn from "./pages/SignIn"
 
+import * as firebase from "firebase";
+var config = {
+  apiKey: "AIzaSyCz4_2OhpXg6TPdYWRXnt330dRyD5q1jFA",
+  authDomain: "programming-473ea.firebaseapp.com",
+  databaseURL: "https://programming-473ea.firebaseio.com",
+  storageBucket: "programming-473ea.appspot.com",
+};
+firebase.initializeApp(config);
+
 
 
 const app = document.getElementById('root');
