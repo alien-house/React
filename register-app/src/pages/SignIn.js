@@ -15,7 +15,7 @@ export default class SignIn extends React.Component {
 		firebase.auth().onAuthStateChanged(function(user) {
 			if (user) {
  				var email = user.email;
- 				console.log("@@"+email);
+ 				console.log("@_@"+email);
  				this.setState.email = email;
 			}
 		});
@@ -30,7 +30,8 @@ export default class SignIn extends React.Component {
 		});
 	}
 	handleSubmit(event) {
-// var user = firebase.auth().currentUser;
+
+		// var user = firebase.auth().currentUser;
 
 // if (user) {
 // 				alert('いるよんん');
@@ -38,9 +39,15 @@ export default class SignIn extends React.Component {
 // 				alert('madaoowann！！');
 // }
 
+		var email = this.state.email;
+		var password = this.state.password;
 
-		var email = "info@alien-house.com";
-		var password = "testtest";
+		if (email === undefined || password === undefined){
+			alert('please something input');
+			return;
+		}
+		// var email = "info@alien-house.com";
+		// var password = "testtest";
 		firebase.auth().signInWithEmailAndPassword(email, password).catch(function(error) {
 		var errorCode = error.code;
 		var errorMessage = error.message;
@@ -48,12 +55,23 @@ export default class SignIn extends React.Component {
 			console.log("@@"+errorMessage);
 		});
 		if (firebase.auth().currentUser) {
-			// firebase.auth().signOut();
+
 			var user = firebase.auth().currentUser;
-				alert('もういろもん');
- 				var newemail = user.email;
- 				console.log("@@"+newemail);
- 				this.setState.email = newemail;
+			// 	alert('もういろもん');
+ 		// 		var newemail = user.email;
+			// 	user.updateProfile({
+			// 		displayName:'ekokokokomi' 
+			// 	}).then(function() {
+ 		// 			console.log("scuseeeees");
+			// 	}, function(error) {
+ 		// 			console.log("nonononono");
+			// 	});
+ 		// 		console.log("@@"+newemail);
+ 		// 		this.setState.email = newemail;
+
+
+    		var displayName = user.displayName;
+    			console.log("@@"+displayName);
 		} 
 
 
