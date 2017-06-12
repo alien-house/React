@@ -1,5 +1,13 @@
 import React from 'react';
 import * as firebase from "firebase";
+import { BrowserRouter, Route, Switch,Redirect } from 'react-router-dom';
+// import {
+//   BrowserRouter as Router,
+//   Route,
+//   Link,
+//   Redirect,
+//   withRouter
+// } from 'react-router-dom'
 
 export default class SignIn extends React.Component {
 	constructor(){
@@ -19,6 +27,18 @@ export default class SignIn extends React.Component {
  				this.setState.email = email;
 			}
 		});
+	}
+
+	componentWillMount() {
+		this.userWillTransfer(this.props);
+	}
+
+	userWillTransfer(props) {
+		if (!localStorage.getItem('sessionId')) {
+		  this.setState({ isAuthenticated: false });
+		} else {
+		  this.setState({ isAuthenticated: true });
+		}
 	}
 
 	handleChange(event) {
@@ -57,6 +77,7 @@ export default class SignIn extends React.Component {
 		if (firebase.auth().currentUser) {
 
 			var user = firebase.auth().currentUser;
+
 			// 	alert('もういろもん');
  		// 		var newemail = user.email;
 			// 	user.updateProfile({
@@ -72,49 +93,11 @@ export default class SignIn extends React.Component {
 
     		var displayName = user.displayName;
     			console.log("@@"+displayName);
+    // const path = `/repos/${displayName}/`
+    // browserHistory.push(path)
 		} 
 
 
-		// if (firebase.auth().currentUser) {
-		// 	// firebase.auth().signOut();
-		// 		alert('もういろもん');
-		// } else {
-
-		// 	var email = this.state.email;
-		// 	var password = this.state.password;
-		// 		console.log(email);
-		// 		console.log(password);
-		// 	if (email === undefined || password === undefined){
-		// 		alert('please enter something');
-		// 		return;
-		// 	}
-		// 	if (email.length < 4) {
-		// 		alert('Please enter an email addressed.');
-		// 		return;
-		// 	}
-		// 	if (password.length < 4) {
-		// 		alert('Please enter a password.');
-		// 		return;
-		// 	}
-		// 	firebase.auth().signInWithEmailAndPassword(email, password).catch(function(error) {
-		// 		// Handle Errors here.
-		// 		var errorCode = error.code;
-		// 		var errorMessage = error.message;
-		// 		if (errorCode === 'auth/wrong-password') {
-		// 			alert('Wrong password.');
-		// 		} else {
-		// 		alert('っっっっっd');
-		// 			alert(errorMessage);
-		// 		}
-		// 		console.log("@"+errorCode);
-		// 		console.log(error);
-		// 	});
-
-		// 	if (firebase.auth().currentUser) {
-		// 		console.log("いるよ");
-		// 	}
-		// 	// event.preventDefault();
-		// }
 	}
 
 	render() {
@@ -136,7 +119,18 @@ export default class SignIn extends React.Component {
 			<button id="btn-signIn" onClick={this.handleSubmit}>ログイン</button>
 
 			<p>email:{this.state.email}</p>
+			
+      this.state.isAuthenticated? (
+        <Route children={this.props.children} />
+      ) : (
+    			<Redirect to={'/mypage'} />
+      )
 			</div>
 		);
 	}
+
 }
+
+	const mapStateToProps = state => ({
+		sessionId: state.sessionId
+	});
