@@ -82,7 +82,7 @@ ReactDOM.render(
 
 		  <hr/>
 
-		  <Route path="/archives/:article" name="archives" component={Archives}/>
+		  <Route path="/archives" name="archives" component={Archives}/>
 		  <Route path="/settings" name="settings" component={Settings}/>
 		</div>
 

@@ -3,9 +3,9 @@ import React from 'react';
 export default class Archives extends React.Component {
 	render() {
 		console.log(this.props);
-		const { query } = this.props.location;
-		const { params } = this.props.match;
-		const { article } = params;
+		// const { query } = this.props.location;
+		// const { params } = this.props.match;
+		const { article } = "params";
 		// const { date, filter } = query;
 		return (
 			<div>
