@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import ComponentUpdates from "./js/fundamental/ComponentUpdates"
+import ComponentHigherOrder from "./js/fundamental/ComponentHigherOrder"
 const app = document.getElementById('app');
 // var Note = React.createClass({
 // 	edit(){
@@ -23,6 +23,6 @@ const app = document.getElementById('app');
 // })
 
 ReactDOM.render(
-     <ComponentUpdates/>,
+     <ComponentHigherOrder/>,
 app);
 
