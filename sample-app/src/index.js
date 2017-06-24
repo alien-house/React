@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Map from "./js/map/Map"
+import ComponentUpdates from "./js/fundamental/ComponentUpdates"
 const app = document.getElementById('app');
 // var Note = React.createClass({
 // 	edit(){
@@ -23,8 +23,6 @@ const app = document.getElementById('app');
 // })
 
 ReactDOM.render(
-     <Map>
-     	あ
-     </Map>,
+     <ComponentUpdates/>,
 app);
 
