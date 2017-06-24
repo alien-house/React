@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import JSXLiveCompiler from "./js/jsxlivecompiler/JSXLiveCompiler"
+import Children from "./js/fundamental/Children"
+// import JSXLiveCompiler from "./js/jsxlivecompiler/JSXLiveCompiler"
 const app = document.getElementById('app');
 // var Note = React.createClass({
 // 	edit(){
@@ -23,6 +24,6 @@ const app = document.getElementById('app');
 // })
 
 ReactDOM.render(
-     <JSXLiveCompiler/>,
+     <Children/>,
 app);
 
