@@ -29,8 +29,6 @@ class Parent extends React.Component{
 		// console.log(items)
 
 
-		
-
 		return null
 	}
 }

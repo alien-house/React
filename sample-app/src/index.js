@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Children from "./js/fundamental/Children"
+import ChildrenExtend from "./js/fundamental/ChildrenExtend"
+// import Children from "./js/fundamental/Children"
 // import JSXLiveCompiler from "./js/jsxlivecompiler/JSXLiveCompiler"
 const app = document.getElementById('app');
 // var Note = React.createClass({
@@ -24,6 +25,6 @@ const app = document.getElementById('app');
 // })
 
 ReactDOM.render(
-     <Children/>,
+     <ChildrenExtend/>,
 app);
 
