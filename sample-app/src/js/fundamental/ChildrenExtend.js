@@ -26,7 +26,6 @@ class Buttons extends React.Component{
 			React.cloneElement(child,{
 				onClick: this.selectItem.bind(this, child.props.value)
 			})
-			console.log(this.props.children);
 		let items = React.Children.map(this.props.children, fn);
 		return(
 			<div>

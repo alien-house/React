@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import ChildrenExtend from "./js/fundamental/ChildrenExtend"
+import ReusableComp from "./js/fundamental/ReusableReactComponents"
 // import Children from "./js/fundamental/Children"
 // import JSXLiveCompiler from "./js/jsxlivecompiler/JSXLiveCompiler"
 const app = document.getElementById('app');
@@ -25,6 +25,6 @@ const app = document.getElementById('app');
 // })
 
 ReactDOM.render(
-     <ChildrenExtend/>,
+     <ReusableComp/>,
 app);
 
