@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-// import Login from "./js/AuthExample"
+import Login from "./js/AuthExample"
 // import ReusableComp from "./js/fundamental/ReusableReactComponents"
 // import Children from "./js/fundamental/Children"
 // import JSXLiveCompiler from "./js/jsxlivecompiler/JSXLiveCompiler"
@@ -25,24 +25,7 @@ const app = document.getElementById('app');
 // 	}
 // })
 
-const App = (props) => {
-	return (
-		<h2 className="text-center">
-			{props.headerMessage}
-		</h2>
-	);
-};
-
-//validation
-App.propTypes = {
-	headerMessage: React.PropTypes.string
-};
-
-App.defaultProps ={
-	headerMessage: "Hellow!"
-};
-
 ReactDOM.render(
-     <App />,
+     <Login/>,
 app);
 
