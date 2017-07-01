@@ -25,11 +25,20 @@ const app = document.getElementById('app');
 // 	}
 // })
 
+const Header = ({message}) => {
+	return (
+		<h2 className="Header text-center">
+		{message}
+		</h2>
+	);
+}
+
 const App = (props) => {
 	return (
-		<h2 className="text-center">
+		<div className="text-center">
+		<Header message="NAming COntests" />
 			{props.headerMessage}
-		</h2>
+		</div>
 	);
 };
 
