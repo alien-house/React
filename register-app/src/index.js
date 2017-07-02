@@ -9,14 +9,9 @@ import Register from "./pages/Register"
 import SignIn from "./pages/SignIn"
 import Mypage from "./mypage/AuthExample"
 
+import {firebaseConfig} from "./config";
 import * as firebase from "firebase";
-var config = {
-  apiKey: "AIzaSyCz4_2OhpXg6TPdYWRXnt330dRyD5q1jFA",
-  authDomain: "programming-473ea.firebaseapp.com",
-  databaseURL: "https://programming-473ea.firebaseio.com",
-  storageBucket: "programming-473ea.appspot.com",
-};
-firebase.initializeApp(config);
+firebase.initializeApp(firebaseConfig);
 
 
 
