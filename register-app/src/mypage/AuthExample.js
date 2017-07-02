@@ -23,7 +23,7 @@ const AuthExample = () => (
       </ul>
       <Route path="/public" component={Public}/> 
       <Route path="/login" component={Login}/>
-      <PrivateRoute path="/protected" component={Protected}/>
+      <PrivateRoute path="/protected" component={Protected}/>{/* original */}
     </div>
   </Router>
 )

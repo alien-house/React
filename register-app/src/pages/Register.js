@@ -22,10 +22,7 @@ export default class Register extends React.Component {
 		// });
 	}
 
-	// handleClick(i) {
-		
-	// }
-
+	// show immediately for each input
 	handleChange(event) {
     	const target = event.target;
     	const value = target.value;
@@ -54,16 +51,23 @@ export default class Register extends React.Component {
 			alert('Please enter a password.');
 			return;
 		}
-		firebase.auth().createUserWithEmailAndPassword(email, password).catch(function(error) {
+		firebase.auth().createUserWithEmailAndPassword(email, password).then(function(user) {
+		    // var user = firebase.auth().currentUser;
+			console.log(user);
+			alert('Your account has created!');
+		    // logUser(user); // Optional
+		},function(error) {
 			// Handle Errors here.
 			var errorCode = error.code;
 			var errorMessage = error.message;
-			// [START_EXCLUDE]
 			if (errorCode === 'auth/weak-password') {
 				alert('The password is too weak.');
 			} else {
 				alert(errorMessage);
 			}
+			// if(error == null){
+			// 	alert('Your account has created!');
+			// }
 			console.log(error);
 			// [END_EXCLUDE]
 		});

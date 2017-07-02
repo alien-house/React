@@ -1,6 +1,6 @@
 import React from 'react';
 import * as firebase from "firebase";
-import { BrowserRouter, Route, Switch,Redirect } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 // import {
 //   BrowserRouter as Router,
 //   Route,
@@ -9,24 +9,30 @@ import { BrowserRouter, Route, Switch,Redirect } from 'react-router-dom';
 //   withRouter
 // } from 'react-router-dom'
 
+const Auth = {
+	isAuthenticated: false,
+	authenticate(cb) {
+		this.isAuthenticated = true
+		cb()
+	},
+	signout(cb) {
+		this.isAuthenticated = false
+		cb()
+	}
+}
+
 export default class SignIn extends React.Component {
 	constructor(){
 		super();
-		this.state = {value: ''};
 
 		this.handleChange = this.handleChange.bind(this);
 		this.handleSubmit = this.handleSubmit.bind(this);
-		this.state = {};
+		this.state = {
+		    redirectToReferrer: false
+		};
 	}
 
 	init(){
-		firebase.auth().onAuthStateChanged(function(user) {
-			if (user) {
- 				var email = user.email;
- 				console.log("@_@"+email);
- 				this.setState.email = email;
-			}
-		});
 	}
 
 	componentWillMount() {
@@ -34,11 +40,22 @@ export default class SignIn extends React.Component {
 	}
 
 	userWillTransfer(props) {
-		if (!localStorage.getItem('sessionId')) {
-		  this.setState({ isAuthenticated: false });
-		} else {
-		  this.setState({ isAuthenticated: true });
-		}
+		// if (!localStorage.getItem('sessionId')) {
+		//   this.setState({ isAuthenticated: false });
+		// } else {
+		//   this.setState({ isAuthenticated: true });
+		// }
+
+		// login check!
+		firebase.auth().onAuthStateChanged(function(user) {
+			if (user) {
+ 				var email = user.email;
+ 				console.log("@_@"+email);
+ 				// this.setState.email = email;
+			}else{
+				console.log("not yet");
+			}
+		});
 	}
 
 	handleChange(event) {
@@ -49,15 +66,8 @@ export default class SignIn extends React.Component {
 			[name]: value
 		});
 	}
+
 	handleSubmit(event) {
-
-		// var user = firebase.auth().currentUser;
-
-// if (user) {
-// 				alert('いるよんん');
-// } else {
-// 				alert('madaoowann！！');
-// }
 
 		var email = this.state.email;
 		var password = this.state.password;
@@ -66,38 +76,31 @@ export default class SignIn extends React.Component {
 			alert('please something input');
 			return;
 		}
+			console.log("email:"+email);
+			console.log("password:"+password);
 		// var email = "info@alien-house.com";
 		// var password = "testtest";
-		firebase.auth().signInWithEmailAndPassword(email, password).catch(function(error) {
-		var errorCode = error.code;
-		var errorMessage = error.message;
+		firebase.auth().signInWithEmailAndPassword(email, password)
+		   .then(function(firebaseUser) {
+			   		// alert("loggin!");
+					Auth.authenticate(() => {
+						this.setState({ redirectToReferrer: true })
+					})
+					var user = firebase.auth().currentUser;
+		    		var displayName = user.displayName;
+	    			console.log("@"+firebaseUser);
+	    			console.log("@..@"+displayName);
+		    // const path = `/repos/${displayName}/`
+		    // browserHistory.push(path)
+			   	if (firebase.auth().currentUser) {
+				} 
+		   }.bind(this))
+		  .catch(function(error) {
+			var errorCode = error.code;
+			var errorMessage = error.message;
 			console.log("@"+errorCode);
-			console.log("@@"+errorMessage);
-		});
-		if (firebase.auth().currentUser) {
-
-			var user = firebase.auth().currentUser;
-
-			// 	alert('もういろもん');
- 		// 		var newemail = user.email;
-			// 	user.updateProfile({
-			// 		displayName:'ekokokokomi' 
-			// 	}).then(function() {
- 		// 			console.log("scuseeeees");
-			// 	}, function(error) {
- 		// 			console.log("nonononono");
-			// 	});
- 		// 		console.log("@@"+newemail);
- 		// 		this.setState.email = newemail;
-
-
-    		var displayName = user.displayName;
-    			console.log("@@"+displayName);
-    // const path = `/repos/${displayName}/`
-    // browserHistory.push(path)
-		} 
-
-
+			console.log("@__@"+errorMessage);
+		  });
 	}
 
 	render() {
@@ -106,6 +109,19 @@ export default class SignIn extends React.Component {
 		// const { params } = this.props.match;
 		// const { article } = params;
 		// const { date, filter } = query;
+		   // this.state.isAuthenticated? (
+     //    <Route children={this.props.children} />
+     //  ) : (
+    	// 		<Redirect to={'/mypage'} />
+     //  )
+		const { from } = this.props.location.state || { from: { pathname: '/' } }
+		const { redirectToReferrer } = this.state
+
+		if (redirectToReferrer) {
+		  return (
+		    <Redirect to={from}/>
+		  )
+		}
 		return (
 			<div>
 			<h1>SignIn</h1>
@@ -120,17 +136,12 @@ export default class SignIn extends React.Component {
 
 			<p>email:{this.state.email}</p>
 			
-      this.state.isAuthenticated? (
-        <Route children={this.props.children} />
-      ) : (
-    			<Redirect to={'/mypage'} />
-      )
 			</div>
 		);
 	}
 
 }
 
-	const mapStateToProps = state => ({
-		sessionId: state.sessionId
-	});
+// const mapStateToProps = state => ({
+// 	sessionId: state.sessionId
+// });
