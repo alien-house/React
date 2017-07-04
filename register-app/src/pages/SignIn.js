@@ -1,6 +1,7 @@
 import React from 'react';
 import * as firebase from "firebase";
 import { Redirect } from 'react-router-dom';
+import { Auth } from './Authenticated';
 // import {
 //   BrowserRouter as Router,
 //   Route,
@@ -9,17 +10,17 @@ import { Redirect } from 'react-router-dom';
 //   withRouter
 // } from 'react-router-dom'
 
-const Auth = {
-	isAuthenticated: false,
-	authenticate(cb) {
-		this.isAuthenticated = true
-		cb()
-	},
-	signout(cb) {
-		this.isAuthenticated = false
-		cb()
-	}
-}
+// const Auth = {
+// 	isAuthenticated: false,
+// 	authenticate(cb) {
+// 		this.isAuthenticated = true
+// 		cb()
+// 	},
+// 	signout(cb) {
+// 		this.isAuthenticated = false
+// 		cb()
+// 	}
+// }
 
 export default class SignIn extends React.Component {
 	constructor(){
@@ -82,14 +83,14 @@ export default class SignIn extends React.Component {
 		// var password = "testtest";
 		firebase.auth().signInWithEmailAndPassword(email, password)
 		   .then(function(firebaseUser) {
-			   		// alert("loggin!");
+			   		// if it succeed, send this function to ...
 					Auth.authenticate(() => {
 						this.setState({ redirectToReferrer: true })
 					})
 					var user = firebase.auth().currentUser;
 		    		var displayName = user.displayName;
 	    			console.log("@"+firebaseUser);
-	    			console.log("@..@"+displayName);
+	    			console.log("@..@"+Auth.isAuthenticated);
 		    // const path = `/repos/${displayName}/`
 		    // browserHistory.push(path)
 			   	if (firebase.auth().currentUser) {
@@ -114,7 +115,8 @@ export default class SignIn extends React.Component {
      //  ) : (
     	// 		<Redirect to={'/mypage'} />
      //  )
-		const { from } = this.props.location.state || { from: { pathname: '/' } }
+		const { from } = this.props.location.state || { from: { pathname: '/dashboard' } }
+		console.log(this.state);
 		const { redirectToReferrer } = this.state
 
 		if (redirectToReferrer) {
@@ -134,7 +136,6 @@ export default class SignIn extends React.Component {
 			</dl>
 			<button id="btn-signIn" onClick={this.handleSubmit}>ログイン</button>
 
-			<p>email:{this.state.email}</p>
 			
 			</div>
 		);
