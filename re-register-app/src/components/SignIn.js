@@ -76,7 +76,10 @@ export default class SignIn extends React.Component {
 		}
 		// console.log("email:"+email);
 		// console.log("password:"+password);
-		login(email,password);
+		login(email,
+			password,
+			() => { this.setState({ redirectToReferrer: true })}
+		);
 	}
 
 	render() {
@@ -94,7 +97,10 @@ export default class SignIn extends React.Component {
 		// console.log(this.state);
 		const { redirectToReferrer } = this.state
 
+			console.log("のお降り？");
+			console.log(this.state);
 		if (redirectToReferrer) {
+			console.log("ある？");
 		  return (
 		    <Redirect to={from}/>
 		  )

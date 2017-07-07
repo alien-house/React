@@ -21,9 +21,8 @@ class App extends Component {
       this.setState({uid:uid});
     }
     requireAuth(getIsLogin);
-    console.log("only one time <3");
+    // console.log("only one time <3");
   }
-
 
   render() {
     return (
@@ -33,7 +32,7 @@ class App extends Component {
             <Gnav />
             <Route path="/register" name="register" component={Register}/>
             <Route path="/signin" name="signin" component={SignIn}/>
-            <PrivateRoute path="/dashboard" name="dashboard" loginstate="{this.state.islogin}" component={Dashboard} />
+            <PrivateRoute path="/dashboard" name="dashboard" component={Dashboard} />
           </div>
         </Router>
       </div>
@@ -42,7 +41,6 @@ class App extends Component {
 }
 
 const PrivateRoute = ({ component: Component, ...rest }) => {
-
   return (
   <Route {...rest} render={props => (
     isAuthenticated() ? (

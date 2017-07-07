@@ -1,10 +1,6 @@
 import React from 'react';
 import DBnav from './DBNav';
-import {
-  BrowserRouter as Router,
-  Route,
-  Link
-} from 'react-router-dom'
+// import { Redirect } from 'react-router-dom';
 // import { login, logout, isLoggedIn } from '../utils/FirebaseAuthService';
 // import {
 //   BrowserRouter as Router,
@@ -15,13 +11,10 @@ import {
 // } from 'react-router-dom'
 
 
-export default class Dashboard extends React.Component {
-	constructor(){
-    	super();
-	}
+export default class Setting extends React.Component {
+
 	render() {
-		const match = this.props.match;
-		console.log(match.url);
+		// console.log(this.props);
 		// const { query } = this.props.location;
 		// const { params } = this.props.match;
 		// const { article } = params;
@@ -33,22 +26,14 @@ export default class Dashboard extends React.Component {
      //  )
 		return (
 			<div>
-			<h1>Dashboard</h1>
-            <DBnav url={match.url} />
-			<Route path={`${match.url}/:topicId`} component={Child}/>
-		    <Route exact path={match.url} render={() => (
-			<h3>Please select a topic.</h3>
-		    )}/>
+			<h1>Setting</h1>
+            <DBnav />
+			
 			</div>
 		);
 	}
 
 }
-const Child = ({ match }) => (
-  <div>
-    <h3>ID: {match.params.id}</h3>
-  </div>
-)
 
 // const mapStateToProps = state => ({
 // 	sessionId: state.sessionId

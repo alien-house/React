@@ -11,9 +11,13 @@ export default class Gnav extends Component {
     return (
       <div>
         <ul>
-          <li><Link to="/register">Register</Link></li>
-          <li><Link to="/signin">SignIn</Link></li>
-             {(isAuthenticated()) ? ( <li><button className="btn btn-danger log" onClick={() => logout()}>Log out </button></li> ) :  ''}
+          { (!isAuthenticated()) ?
+            (<li><Link to="/register">Register</Link></li>):''
+          }
+          { (!isAuthenticated()) ?
+            (<li><Link to="/signin">SignIn</Link></li>):''
+          }
+          {(isAuthenticated()) ? ( <li><button className="btn btn-danger log" onClick={() => logout()}>Log out </button></li> ) :  ''}
           <li><Link to="/dashboard">Dashboard</Link></li>
         </ul>
       </div>

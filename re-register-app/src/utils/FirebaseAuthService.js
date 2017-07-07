@@ -7,7 +7,7 @@ import * as firebase from "firebase";
 firebase.initializeApp(firebaseConfig);
 export var isLogIn = false;
 
-export function login(email, password) {
+export function login(email, password, setRedirectToRefFnc) {
   firebase.auth().signInWithEmailAndPassword(email, password)
      .then(function(firebaseUser) {
           // if it succeed, send this function to ...
@@ -16,10 +16,11 @@ export function login(email, password) {
         // })
         var user = firebase.auth().currentUser;
         var displayName = user.displayName;
-        if (firebase.auth().currentUser) {
+        if (user) {
           alert("now lioginn!!!");
-          history.push('/dashboard');
-          history.replace('/dashboard');
+          setRedirectToRefFnc();
+          // history.push('/dashboard');
+          // history.replace('/dashboard');
           // replace({pathname: '/dashboard'});
         } 
      }.bind(this))
@@ -32,14 +33,13 @@ export function login(email, password) {
 
 }
 
-export function redirectAuth(nextState, replace) {
-  if (!isLogIn) {
-    replace({pathname: '/'});
-  }else{
-    replace({pathname: '/dashboard'});
-    
-  }
-}
+// export function redirectAuth(nextState, replace) {
+//   if (!isLogIn) {
+//     replace({pathname: '/'});
+//   }else{
+//     replace({pathname: '/dashboard'});
+//   }
+// }
 
 export function register(email, password) {
   firebase.auth().createUserWithEmailAndPassword(email, password).then(function(user) {
@@ -81,9 +81,11 @@ export function requireAuth(getIsLogin) {
   firebase.auth().onAuthStateChanged(function(user) {
     if (user) {
       // isLogIn = true;
+      localStorage.setItem(storageKey, user.uid);
       getIsLogin(user.uid);
     }else{
       // isLogIn = false;
+      localStorage.removeItem(storageKey);
       getIsLogin(null);
     }
   });
