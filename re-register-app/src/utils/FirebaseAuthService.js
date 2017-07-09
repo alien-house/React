@@ -72,6 +72,25 @@ export function logout() {
   history.push('/');
 }
 
+export function updateUserProfile(obj) {
+  var user = firebase.auth().currentUser;
+  /* for this structure
+  {
+    displayName: "Jane Q. User",
+    photoURL: "https://example.com/jane-q-user/profile.jpg"
+  }
+  */
+  user.updateProfile(obj).then(function() {
+    // Update successful.
+  }, function(error) {
+    // An error happened.
+  });
+}
+
+export function getUserProfile(obj) {
+  var user = firebase.auth().currentUser;
+}
+
 export function isAuthenticated() {
   return !!firebase.auth().currentUser || !!localStorage.getItem(storageKey);
 }

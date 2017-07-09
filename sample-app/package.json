@@ -8,7 +8,8 @@
     "react": "^15.5.4",
     "react-dom": "^15.5.4",
     "react-router": "^4.1.1",
-    "react-router-dom": "^4.1.1"
+    "react-router-dom": "^4.1.1",
+    "react-transition-group": "^1.2.0"
   },
   "devDependencies": {
     "babel-plugin-add-module-exports": "^0.2.1",

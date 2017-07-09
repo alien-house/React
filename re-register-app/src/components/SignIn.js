@@ -44,16 +44,6 @@ export default class SignIn extends React.Component {
 		//   this.setState({ isAuthenticated: true });
 		// }
 
-		// login check!
-		// firebase.auth().onAuthStateChanged(function(user) {
-		// 	if (user) {
- 	// 			var email = user.email;
- 	// 			console.log("@_@"+email);
- 	// 			// this.setState.email = email;
-		// 	}else{
-		// 		console.log("not yet");
-		// 	}
-		// });
 	}
 
 	handleChange(event) {
@@ -97,7 +87,6 @@ export default class SignIn extends React.Component {
 		// console.log(this.state);
 		const { redirectToReferrer } = this.state
 
-			console.log("のお降り？");
 			console.log(this.state);
 		if (redirectToReferrer) {
 			console.log("ある？");

@@ -5,6 +5,7 @@ import {
   Route,
   Link
 } from 'react-router-dom'
+import Setting from "./Setting"
 // import { login, logout, isLoggedIn } from '../utils/FirebaseAuthService';
 // import {
 //   BrowserRouter as Router,
@@ -35,7 +36,7 @@ export default class Dashboard extends React.Component {
 			<div>
 			<h1>Dashboard</h1>
             <DBnav url={match.url} />
-			<Route path={`${match.url}/:topicId`} component={Child}/>
+			<Route path={`${match.url}/setting`} component={Setting}/>
 		    <Route exact path={match.url} render={() => (
 			<h3>Please select a topic.</h3>
 		    )}/>
@@ -50,6 +51,4 @@ const Child = ({ match }) => (
   </div>
 )
 
-// const mapStateToProps = state => ({
-// 	sessionId: state.sessionId
-// });
+// <Route path={`${match.url}/:topicId`} component={Child}/>

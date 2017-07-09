@@ -10,6 +10,8 @@ import {
   Redirect,
   browserHistory,
 } from 'react-router-dom'
+import { CSSTransitionGroup } from 'react-transition-group'
+import './App.css'
 
 class App extends Component {
   constructor(){
@@ -30,9 +32,17 @@ class App extends Component {
         <Router history={browserHistory}>
           <div>
             <Gnav />
-            <Route path="/register" name="register" component={Register}/>
-            <Route path="/signin" name="signin" component={SignIn}/>
-            <PrivateRoute path="/dashboard" name="dashboard" component={Dashboard} />
+            <div style={styles.content}>
+              <CSSTransitionGroup
+                transitionName="fade"
+                transitionEnterTimeout={300}
+                transitionLeaveTimeout={300}
+              >
+              <Route path="/register" name="register" component={Register}/>
+              <Route path="/signin" name="signin" component={SignIn}/>
+              <PrivateRoute path="/dashboard" name="dashboard" component={Dashboard} />
+            </CSSTransitionGroup>
+            </div>
           </div>
         </Router>
       </div>
@@ -53,5 +63,20 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
     )
   )}/>
 )}
+
+const styles = {}
+
+styles.fill = {
+  position: 'absolute',
+  left: 0,
+  right: 0,
+  top: 0,
+  bottom: 0
+}
+
+styles.content = {
+  ...styles.fill,
+  top: '140px'
+}
 
 export default App;
