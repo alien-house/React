@@ -1,6 +1,14 @@
 import React from 'react';
 import { register } from '../utils/FirebaseAuthService';
 
+const styles = {}
+styles.fill = {
+  position: 'absolute',
+  left: 0,
+  right: 0,
+  top: 0,
+  bottom: 0
+}
 export default class Register extends React.Component {
 	constructor(){
 		super();
@@ -59,7 +67,7 @@ export default class Register extends React.Component {
 
 	render() {
 		return (
-			<div>
+			<div style={styles.fill}>
 			<h1>Register</h1>
 			<form onSubmit={this.handleSubmit}>
 			<dl>

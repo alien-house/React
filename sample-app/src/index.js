@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+// import AnimationExampleImporting from "./js/AnimationExampleImporting"
 import AnimationExample from "./js/AnimationExample"
 // import Login from "./js/AuthExample"
 // import ReusableComp from "./js/fundamental/ReusableReactComponents"

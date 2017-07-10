@@ -22,6 +22,14 @@ import { login } from '../utils/FirebaseAuthService';
 // 	}
 // }
 
+const styles = {}
+styles.fill = {
+  position: 'absolute',
+  left: 0,
+  right: 0,
+  top: 0,
+  bottom: 0
+}
 export default class SignIn extends React.Component {
 	constructor(){
 		super();
@@ -95,7 +103,7 @@ export default class SignIn extends React.Component {
 		  )
 		}
 		return (
-			<div>
+			<div style={styles.fill}>
 			<h1>SignIn</h1>
 			<p>Please log in</p>
 			<dl>
