@@ -82,13 +82,30 @@ export function updateUserProfile(obj) {
   */
   user.updateProfile(obj).then(function() {
     // Update successful.
+        alert("has saved!");
   }, function(error) {
     // An error happened.
   });
 }
 
-export function getUserProfile(obj) {
+export function getUserProfile() {
   var user = firebase.auth().currentUser;
+  var userDate = {};
+  console.log("遊佐");
+  console.log(user);
+  if (user != null) {
+    userDate = {
+      name : user.displayName,
+      email : user.email,
+      photoUrl : user.photoURL,
+      emailVerified : user.emailVerified,
+      uid : user.uid
+    }
+    return userDate;
+  }else{
+    return false;
+  }
+
 }
 
 export function isAuthenticated() {

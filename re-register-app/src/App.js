@@ -39,8 +39,9 @@ class App extends Component {
                 transitionEnterTimeout={300}
                 transitionLeaveTimeout={300}
               >
-              {React.cloneElement(this.props.children, { key: this.props.location.pathname })}
-              
+              <Route path="/register" name="register" component={Register}/>
+              <Route path="/signin" name="signin" component={SignIn}/>
+              <PrivateRoute path="/dashboard" name="dashboard" component={Dashboard} />
             </CSSTransitionGroup>
             </div>
           </div>
