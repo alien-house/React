@@ -1,0 +1,110 @@
+@import url('https://fonts.googleapis.com/css?family=Montserrat:100,200,300,600,700');
+
+/* base ---------------------------- */
+/* REWRITE(TAG)
+------------------------------------ */
+html{font-size: 10px;}
+html, body{
+  height: 100%;
+  width: 100%;
+}
+body {
+	position: relative;
+	color: #fff;
+	text-align:left;
+  margin: 0;
+  padding: 0;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background: #eef9ff;
+	-webkit-text-size-adjust: none;	/* webkit */ 
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	font-size: 12px;
+}
+/*@media (max-width: 480px) {
+	body {
+		min-width:100%;
+		background-size: 50%;
+	}
+}*/
+body,input,textarea{
+	font-size: 1.4rem;
+	line-height: 1;
+	font-family: 'Montserrat', Arial, "Yu Gothic",YuGothic,sans-serif,"Hiragino Kaku Gothic Pro",Meiryo,Osaka,"MS PGothic";
+}
+h1, h2, h3, h4, h5, h6 {
+	font-weight: normal;
+}
+p, li, dt, dd, th, td, address, pre, input, textarea, caption, code, figcaption {
+	line-height: 1;
+}
+li li, li dl, li dt, li dd, li ol, li p, dd dd, dd p, dd th, dd td, dd li, dd pre, dd input, dd textarea, td dt, td dd, td li, td p, p input, p textarea, p button, table p, table ul, table ol {
+	margin: 0;
+	padding:0;
+}
+figure {
+	display: block;
+}
+address {
+	display: inline;
+}
+ul, ol {
+	list-style: none;
+	margin: 0;
+	padding:0;
+}
+a {
+	color: #292929;
+	text-decoration: none;
+}
+a:hover {
+	text-decoration: none;
+}
+a.news {
+	color: #896d00;
+        text-decoration:underline;
+}
+a.news:hover {
+	color:#ff0000;
+}
+a:focus {
+	outline: none;
+}
+img {
+	vertical-align: bottom;
+}
+
+/* base ---------------------------- */
+/* COMMON LAYOUT
+------------------------------------ */
+p,li,dt,dd,th,td{
+	line-height: 1.2;
+	font-size:1.4rem;
+}
+
+a.imghover{
+	-webkit-transition: 0.3s ease-in-out;
+	-moz-transition: 0.3s ease-in-out;
+	transition: 0.3s ease-in-out;
+}
+a.imghover:hover{
+	opacity:0.8;
+}
+img{
+	width: 100%;
+	height: auto;
+}
+
+body {
+}
+/*App{
+  position: 'absolute';
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background: #333;
+}*/

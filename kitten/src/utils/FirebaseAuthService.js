@@ -17,7 +17,6 @@ export function login(email, password, setRedirectToRefFnc) {
         var user = firebase.auth().currentUser;
         var displayName = user.displayName;
         if (user) {
-          alert("now lioginn!!!");
           setRedirectToRefFnc();
           // history.push('/dashboard');
           // history.replace('/dashboard');
