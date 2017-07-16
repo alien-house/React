@@ -27,7 +27,6 @@ export default class Index extends React.Component {
 
 		return (
 			<Router history={browserHistory}>
-    			<Route render={({ location }) => (
 				<div className="login-wrap">
 					<div><img src={logo} className="app-logo" alt="kitten" /></div>
 					<div className="login-box">
@@ -36,12 +35,11 @@ export default class Index extends React.Component {
 							<li><NavLink activeClassName="active" to="/signin" >SignIn</NavLink></li>
 						</ul>
 						<Switch>
-								<Route location={location} key={location.key} path="/:pathurl" component={HSL}/>
-							
+							<Route path="/register" name="register" component={Register}/>
+							<Route path="/signin" name="signin" component={SignIn}/>
 						</Switch>
 					</div>
 				</div>
-    )}/>
 			</Router>
 			
 		);

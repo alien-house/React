@@ -1,6 +1,7 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom';
 import { login } from '../../utils/FirebaseAuthService';
+import { CSSTransitionGroup } from 'react-transition-group';
 // import { Auth } from './Authenticated';
 // import {
 //   BrowserRouter as Router,
@@ -95,13 +96,19 @@ export default class SignIn extends React.Component {
 		  )
 		}
 		return (
-			<div>
+          <CSSTransitionGroup
+          	component="div"
+            transitionName="route"
+            transitionEnterTimeout={300}
+            transitionAppearTimeout={600}
+            transitionLeaveTimeout={300}
+            transitionAppear={true}
+          >
 				<div className="form-input-box"><input type="text" name="email" placeholder="E-Mail" className="form-input" value={this.state.value} onChange={this.handleChange} /></div>
 				<div className="form-input-box"><input type="text" name="password" placeholder="Password" className="form-input" value={this.state.value} onChange={this.handleChange} /></div>
 			<button className="btn-submit" onClick={this.handleSubmit}>Login</button>
 
-			
-			</div>
+			</CSSTransitionGroup>
 		);
 	}
 

@@ -1,5 +1,6 @@
 import React from 'react';
 import { register } from '../../utils/FirebaseAuthService';
+import { CSSTransitionGroup } from 'react-transition-group'
 
 // const styles = {}
 // styles.fill = {
@@ -67,7 +68,14 @@ export default class Register extends React.Component {
 
 	render() {
 		return (
-			<div>
+          <CSSTransitionGroup
+          	component="div"
+            transitionName="route"
+            transitionEnterTimeout={300}
+            transitionAppearTimeout={600}
+            transitionLeaveTimeout={300}
+            transitionAppear={true}
+          >
 			<form onSubmit={this.handleSubmit}>
 				<div className="form-input-box">
 				<input type="text" name="email" className="form-input" placeholder="E-Mail" value={this.state.value} onChange={this.handleChange} />
@@ -77,7 +85,7 @@ export default class Register extends React.Component {
 				</div>
 			<button className="btn-submit">Register</button>
 			</form>
-			</div>
+			</CSSTransitionGroup>
 		);
 	}
 }
