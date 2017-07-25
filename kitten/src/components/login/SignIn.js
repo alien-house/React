@@ -84,7 +84,7 @@ export default class SignIn extends React.Component {
      //  ) : (
     	// 		<Redirect to={'/mypage'} />
      //  )
-		const { from } = this.props.location.state || { from: { pathname: '/' } }
+		const { from } = this.props.location.state || { from: { pathname: '/dashboard' } }
 		// console.log(this.state);
 		const { redirectToReferrer } = this.state
 

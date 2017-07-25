@@ -1,6 +1,6 @@
 import React from 'react';
 import { register } from '../../utils/FirebaseAuthService';
-import { CSSTransitionGroup } from 'react-transition-group'
+import { CSSTransitionGroup } from 'react-transition-group';
 
 // const styles = {}
 // styles.fill = {

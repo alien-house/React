@@ -139,6 +139,7 @@ export function getDatabase(urlid, objFnc) {
 }
 
 export function isAuthenticated() {
+  console.log("tonnda");
   return !!firebase.auth().currentUser || !!localStorage.getItem(storageKey);
 }
 
