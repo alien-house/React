@@ -12,13 +12,13 @@ body {
 	position: relative;
 	color: #fff;
 	text-align:left;
-  margin: 0;
-  padding: 0;
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 0;
-  background: #eef9ff;
+	margin: 0;
+	padding: 0;
+	left: 0;
+	right: 0;
+	top: 0;
+	bottom: 0;
+	background: #eef9ff;
 	-webkit-text-size-adjust: none;	/* webkit */ 
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
