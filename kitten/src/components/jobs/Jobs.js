@@ -1,5 +1,5 @@
 import React from 'react';
-import { login, isAuthenticated } from '../../utils/FirebaseAuthService';
+import { login, isAuthenticated, getUserProfile, getUserdata, getDatabase, userDataFirebase, requireAuth } from '../../utils/FirebaseAuthService';
 import { CSSTransitionGroup } from 'react-transition-group'
 import axios from 'axios'
 import fetchJsonp from 'fetch-jsonp'
@@ -19,10 +19,60 @@ export default class Index extends React.Component {
 		};
 		this.logChange = this.logChange.bind(this);
 	}
+
 	componentWillMount() {
 		console.log("IndexIndexIndex");
 		var that = this;
-		var url = JOBURL_INDEED + '&q=front+end+developer&l=vancouver%2C+bc&sort=&radius=&st=&jt=&start=&limit=&fromage=&filter=&latlong=1&co=ca&chnl=&userip=1.2.3.4&useragent=Mozilla/%2F4.0(Firefox)&v=2&format=json'
+     	var userData = getUserProfile();
+     	getUserdata();
+     	console.log('userData::', userData);
+		// getDatabase('devStatus',
+		// 	(objDate) => { 
+		// 		var obj = new Array();
+		// 		console.log("======================");
+		// 		var objArray = objDate.split(",");
+		// 		objArray.forEach(function(item, index){
+		// 			obj[index] = {value: item, label: item};
+		// 		});
+		//     console.log('devStatus::', obj)
+		// 		this.setState({ options: obj })
+		// 	}
+		// );
+		var url = JOBURL_INDEED + '&q=front+end+developer&l=vancouver%2C+bc&sort=&radius=&st=&jt=&start=&limit=&fromage=&filter=&latlong=1&co=ca&chnl=&userip=1.2.3.4&useragent=Mozilla/%2F4.0(Firefox)&v=2&format=json';
+		fetchJsonp(url)
+		  .then(function(response) {
+		    return response.json()
+		  }).then(function(json) {
+		    that.setState({ jobdata: json });
+		  }).catch(function(ex) {
+		    console.log('parsing failed', ex)
+		  })
+
+	}
+	componentDidMount(){
+     	var userData = getUserProfile();
+     	console.log('userData::', userData)
+     	console.log('userData::', userDataFirebase)
+
+	}
+
+	logChange(val) {
+		console.log("Selected: " + JSON.stringify(val));
+		this.setState({
+			jobsearch: val,
+			options:val
+		});
+		var url = JOBURL_INDEED + '&l=vancouver%2C+bc&sort=&radius=&st=&jt=&start=&limit=&fromage=&filter=&latlong=1&co=ca&chnl=&userip=1.2.3.4&useragent=Mozilla/%2F4.0(Firefox)&v=2&format=json';
+		var words = "";
+		val.map(function(data, i){
+			words += data.value;
+			if(i != (val.length - 1)){ words += "+";}
+		})
+		url += "&q=" + words;
+		this.getData(url);
+	}
+	getData(url){
+		var that = this;
 		fetchJsonp(url)
 		  .then(function(response) {
 		    return response.json()
@@ -32,14 +82,6 @@ export default class Index extends React.Component {
 		  }).catch(function(ex) {
 		    console.log('parsing failed', ex)
 		  })
-	}
-	logChange(val) {
-	  console.log("Selected: " + JSON.stringify(val));
-	  console.log(val.value);
-		this.setState({
-			jobsearch: val,
-			options:val
-		});
 	}
 
 	render(selectProps) {

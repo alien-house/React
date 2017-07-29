@@ -6,6 +6,8 @@ import {firebaseConfig} from "./config";
 import * as firebase from "firebase";
 firebase.initializeApp(firebaseConfig);
 export var isLogIn = false;
+export var userData;
+
 
 export function login(email, password, setRedirectToRefFnc) {
   firebase.auth().signInWithEmailAndPassword(email, password)
@@ -143,6 +145,20 @@ export function isAuthenticated() {
   return !!firebase.auth().currentUser || !!localStorage.getItem(storageKey);
 }
 
+export function getUserdata() {
+  firebase.auth().onAuthStateChanged(function(user) {
+    if (user) {
+      // isLogIn = true;
+      localStorage.setItem(storageKey, user.uid);
+      userData = user;
+      console.log('useruser::', user);
+    }else{
+      // isLogIn = false;
+      localStorage.removeItem(storageKey);
+    }
+  });
+}
+
 export function requireAuth(getIsLogin) {
   // console.log("きてる＿？"+getIsLogin);
   firebase.auth().onAuthStateChanged(function(user) {
@@ -150,6 +166,7 @@ export function requireAuth(getIsLogin) {
       // isLogIn = true;
       localStorage.setItem(storageKey, user.uid);
       getIsLogin(user.uid);
+      userData = user;
     }else{
       // isLogIn = false;
       localStorage.removeItem(storageKey);
