@@ -1,0 +1,33 @@
+.header{
+  display: flex;
+  width: 100%;
+  height: 45px;
+  position: absolute;
+  justify-content:space-between;
+  background: #fff;
+  z-index: 1;
+}
+.glogo{
+  width: 180px;
+  text-align: center;
+  margin:5px 0;
+}
+.g-logo {
+  width: 120px;
+  height: 35px;
+}
+.gnav{
+  display: flex;
+  justify-content:center;
+}
+.gnav ul{
+  display: flex;
+  margin: 14px 12px 0 12px;
+}
+.gnav ul li{
+  margin:0 10px;
+}
+.gnav ul li a{
+  color: #2b8ef4;
+}
+

@@ -33,8 +33,8 @@ class App extends Component {
 		console.log("App da");
 	}
   render() {
-	// const match = this.props.match;
-	// console.log("rrrrr"+match);
+
+		const match = this.props.match;
     return (
 		<Router history={browserHistory}>
 			<div className="App">

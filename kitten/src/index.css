@@ -41,6 +41,7 @@ h1, h2, h3, h4, h5, h6 {
 p, li, dt, dd, th, td, address, pre, input, textarea, caption, code, figcaption {
 	line-height: 1;
 }
+h1, h2, h3, h4, h5, h6,p, li, dt, dd, th, td, address, pre, input, textarea, caption, code, figcaption,
 li li, li dl, li dt, li dd, li ol, li p, dd dd, dd p, dd th, dd td, dd li, dd pre, dd input, dd textarea, td dt, td dd, td li, td p, p input, p textarea, p button, table p, table ul, table ol {
 	margin: 0;
 	padding:0;
