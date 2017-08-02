@@ -7,7 +7,9 @@
   height: 110px;
   margin: 60px 0 50px;
 }
-
+.login-wrap{
+  text-align: center;
+}
 .login-box{
   background: #fff;
   width: 460px;

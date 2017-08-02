@@ -1,7 +1,6 @@
 import createHistory from 'history/createBrowserHistory'
 const history = createHistory()
-const ID_TOKEN_KEY = 'id_token';
-export const storageKey = 'KEY_FOR_LOCAL_STORAGE';
+export const ID_TOKEN_KEY = 'KEY_FOR_LOCAL_STORAGE';
 import {firebaseConfig} from "./config";
 import * as firebase from "firebase";
 firebase.initializeApp(firebaseConfig);
@@ -17,14 +16,14 @@ export function login(email, password, setRedirectToRefFnc) {
         //   this.setState({ redirectToReferrer: true })
         // })
         var user = firebase.auth().currentUser;
-        var displayName = user.displayName;
+        // var displayName = user.displayName;
         if (user) {
           setRedirectToRefFnc();
           // history.push('/dashboard');
           // history.replace('/dashboard');
           // replace({pathname: '/dashboard'});
         } 
-     }.bind(this))
+     })
     .catch(function(error) {
       var errorCode = error.code;
       var errorMessage = error.message;
@@ -117,16 +116,22 @@ export function updateDatabase(obj) {
   firebase.database().ref('users/' + userId).set(obj);
 }
 
-export function getDatabase(urlid, objFnc) {
+export function getDatabase(urlid, objFnc, userID = null) {
   // var data;
   var user = firebase.auth().currentUser;
-  if (user != null) {
+  if (user != null || userID != null) {
     console.log("きてる＿？"+user);
-    if(urlid == 'users'){
-      urlid += "/" + firebase.auth().currentUser.uid;
+    var urlUserID;
+    if(user == null){
+      urlUserID = userID;
+    }else{
+      urlUserID = firebase.auth().currentUser.uid;
+    }
+    if(urlid === 'users'){
+      urlid += "/" + urlUserID;
     }
   }else{
-    return false;
+    console.log("getDatabase取得できず");
   }
   
   firebase.database().ref(urlid).once('value').then(function(snapshot) {
@@ -142,19 +147,19 @@ export function getDatabase(urlid, objFnc) {
 
 export function isAuthenticated() {
   console.log("tonnda");
-  return !!firebase.auth().currentUser || !!localStorage.getItem(storageKey);
+  return !!firebase.auth().currentUser || !!localStorage.getItem(ID_TOKEN_KEY);
 }
 
 export function getUserdata() {
   firebase.auth().onAuthStateChanged(function(user) {
     if (user) {
       // isLogIn = true;
-      localStorage.setItem(storageKey, user.uid);
+      localStorage.setItem(ID_TOKEN_KEY, user.uid);
       userData = user;
       console.log('useruser::', user);
     }else{
       // isLogIn = false;
-      localStorage.removeItem(storageKey);
+      localStorage.removeItem(ID_TOKEN_KEY);
     }
   });
 }
@@ -164,12 +169,12 @@ export function requireAuth(getIsLogin) {
   firebase.auth().onAuthStateChanged(function(user) {
     if (user) {
       // isLogIn = true;
-      localStorage.setItem(storageKey, user.uid);
+      localStorage.setItem(ID_TOKEN_KEY, user.uid);
       getIsLogin(user.uid);
       userData = user;
     }else{
       // isLogIn = false;
-      localStorage.removeItem(storageKey);
+      localStorage.removeItem(ID_TOKEN_KEY);
       getIsLogin(null);
     }
   });
@@ -179,17 +184,17 @@ export function requireAuth(getIsLogin) {
   // }
 }
 
-// export function getIdToken() {
-//   return localStorage.getItem(ID_TOKEN_KEY);
-// }
+export function getIdToken() {
+  return localStorage.getItem(ID_TOKEN_KEY);
+}
 
 // export function getAccessToken() {
 //   return localStorage.getItem(ACCESS_TOKEN_KEY);
 // }
 
-function clearIdToken() {
-  localStorage.removeItem(ID_TOKEN_KEY);
-}
+// function clearIdToken() {
+//   localStorage.removeItem(ID_TOKEN_KEY);
+// }
 
 // function clearAccessToken() {
 //   localStorage.removeItem(ACCESS_TOKEN_KEY);

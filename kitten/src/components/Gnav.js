@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { isAuthenticated, logout } from '../utils/FirebaseAuthService';
+import { logout } from '../utils/FirebaseAuthService';
 import logo from '../img/logo_hori.svg';
 import { 
   Link,
@@ -25,8 +25,8 @@ export default class Gnav extends Component {
           <ul>
             <li><Link to="/dashboard" >Dashboard</Link></li>
             <li><button className="btn btn-danger log" onClick={() => logout()}>Log out </button></li>
-            <li><Link to="/register">Register</Link></li>
-            <li><Link to="/signin" >SignIn</Link></li>
+            <li><Link to="/login/register">Register</Link></li>
+            <li><Link to="/login/signin" >SignIn</Link></li>
           </ul>
         </nav>
       </div>

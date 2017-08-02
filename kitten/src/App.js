@@ -5,15 +5,12 @@ import Dashboard from "./components/dashboard/Index"
 import DBnav from './components/dashboard/DBNav';
 import Jobs from "./components/jobs/Jobs"
 import { requireAuth, isAuthenticated } from './utils/FirebaseAuthService';
-import { CSSTransitionGroup } from 'react-transition-group'
+
 import { 
   BrowserRouter as Router,
-  Route, 
-  Link,
+  Route,
   Redirect,
-  browserHistory,
-  Switch,
-  NavLink
+  browserHistory
 } from 'react-router-dom'
 import './App.css';
 
@@ -29,12 +26,7 @@ class App extends Component {
 	requireAuth(getIsLogin);
 	// console.log("only one time <3");
 	}
-	componentWillMount() {
-		console.log("App da");
-	}
   render() {
-
-		const match = this.props.match;
     return (
 		<Router history={browserHistory}>
 			<div className="App">
@@ -44,8 +36,8 @@ class App extends Component {
 	        		<div className="dashboard-content">
 						<PrivateRoute path="/dashboard" component={Dashboard}/>
 						<Route path="/jobs" name="jobs" component={Jobs}/>
+						<Route path="/login" name="login" component={Login}/>
 					</div>
-					<Route path="/signin" name="signin" component={Login}/>
 				</div>
 			</div>
 		</Router>
@@ -59,7 +51,7 @@ const PrivateRoute = ({ component: Component, ...rest }) => (
       <Component {...props}/>
     ) : (
       <Redirect to={{
-        pathname: '/signin',
+        pathname: '/login/signin',
         state: { from: props.location }
       }}/>
     )

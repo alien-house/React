@@ -1,24 +1,8 @@
 import React from 'react';
-import {
-  BrowserRouter as Router,
-  Route,
-  Link
-} from 'react-router-dom'
-import FontAwesome from 'react-fontawesome';
-// import { login, logout, isLoggedIn } from '../utils/FirebaseAuthService';
-// import {
-//   BrowserRouter as Router,
-//   Route,
-//   Link,
-//   Redirect,
-//   withRouter
-// } from 'react-router-dom'
 
 
 export default class Dashboard extends React.Component {
-	constructor(){
-    	super();
-	}
+	
 	render() {
 		// const { query } = this.props.location;
 		// const { params } = this.props.match;
@@ -40,10 +24,10 @@ export default class Dashboard extends React.Component {
 	}
 
 }
-const Child = ({ match }) => (
-  <div>
-    <h3>ID: {match.params.id}</h3>
-  </div>
-)
+// const Child = ({ match }) => (
+//   <div>
+//     <h3>ID: {match.params.id}</h3>
+//   </div>
+// )
 
 // <Route path={`${match.url}/:topicId`} component={Child}/>

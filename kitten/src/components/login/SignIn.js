@@ -88,7 +88,6 @@ export default class SignIn extends React.Component {
 		// console.log(this.state);
 		const { redirectToReferrer } = this.state
 
-			console.log(this.state);
 		if (redirectToReferrer) {
 			console.log("ある？");
 		  return (

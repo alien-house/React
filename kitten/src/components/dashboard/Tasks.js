@@ -1,7 +1,4 @@
 import React from 'react';
-import Select from 'react-select';
-import 'react-select/dist/react-select.css';
-import { updateUserProfile, getUserProfile, getDatabase, updateDatabase } from '../../utils/FirebaseAuthService';
 
 export default class Tasks extends React.Component {
 

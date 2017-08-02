@@ -1,16 +1,9 @@
 import React from 'react';
-import { login, isAuthenticated } from '../../utils/FirebaseAuthService';
-import { CSSTransitionGroup } from 'react-transition-group'
+// import { login, isAuthenticated } from '../../utils/FirebaseAuthService';
 import { 
-  BrowserRouter as Router,
   Route, 
-  Link,
-  Redirect,
-  browserHistory,
   Switch,
-  NavLink
 } from 'react-router-dom'
-import { withRouter } from 'react-router'
 import './Dashboard.css';
 import Dashboard from "./Dashboard"
 import Messages from "./Messages"

@@ -17,7 +17,8 @@ body {
 	right: 0;
 	top: 0;
 	bottom: 0;
-	background: #eef9ff;
+	/*background: #eef9ff;*/
+	background: #F8F8FA;
 	-webkit-text-size-adjust: none;	/* webkit */ 
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;

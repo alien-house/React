@@ -28,10 +28,9 @@ export default class Setting extends React.Component {
      	var userData = getUserProfile();
      	// console.log(userData);
 		this.state = userData;
-		var options = [];
 		getDatabase('devStatus',
 			(objDate) => { 
-				var obj = new Array();
+				var obj = [];
 				console.log("======================");
 				var objArray = objDate.split(",");
 				objArray.forEach(function(item, index){
