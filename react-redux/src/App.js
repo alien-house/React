@@ -3,8 +3,7 @@ import User from './components/User';
 
 import React, { Component } from 'react';
 import { connect } from "react-redux";
-// import logo from './logo.svg';
-// import './App.css';
+import { setName } from "./actions/userActions";
 
 class App extends Component {
   render() {
@@ -17,22 +16,21 @@ class App extends Component {
     );
   }
 }
-
+//mapStateToPropsは、一枚岩のでっかいstateの中から、対象のコンポーネントに合ったプロパティを生成する為のものです。
 const mapStateToProps = (state) => {
   return {
     user: state.user,
     math: state.math
   };
 };
+//mapDispatchToPropsは、dispatch関数を受け取ってプロパティに変換します。
+//dispatchでアクションを呼び起こす
 const mapDispatchToProps = (dispatch) => {
   return {
     setName: (name) => {
-      dispatch({
-        type: "SET_NAME",
-        payload: name
-      });
+      dispatch(setName(name));
     }
   };
 };
-
+//connectは、ReduxとReactのコンポーネントを繋ぎ込む為のメソッドです。
 export default connect(mapStateToProps, mapDispatchToProps)(App);
