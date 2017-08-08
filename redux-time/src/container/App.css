@@ -32,3 +32,14 @@ h1{
 .clock-color{
   display:block;
 }
+.copy{
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  padding: 10px;
+}
+.copy a{
+  color: #fff;
+  font-size: 0.6rem;
+  font-weight: normal;
+}

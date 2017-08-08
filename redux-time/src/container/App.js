@@ -19,6 +19,7 @@ class App extends Component {
       <div className="warp">
         <h1>Redux Clock</h1>
         <Clock {...this.props.time} />
+        <small className="copy">inspired by <a href="https://github.com/tsuyoshiwada/redux-samples/tree/gh-pages/clock" target="_blank">tsuyoshiwada/redux-samples</a></small>
       </div>
     );
   }
