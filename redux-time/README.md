@@ -1,4 +1,4 @@
-This Redux Clock project is inspired [tsuyoshiwada/redux-samples](https://github.com/tsuyoshiwada/redux-samples/tree/gh-pages/clock).
+This Redux Clock project is inspired by [tsuyoshiwada/redux-samples](https://github.com/tsuyoshiwada/redux-samples/tree/gh-pages/clock).
 
 [ Technologies ]
 - React
