@@ -16,7 +16,7 @@ class App extends Component {
 
   render() {
     return (
-      <div>
+      <div className="warp">
         <h1>Redux Clock</h1>
         <Clock {...this.props.time} />
       </div>

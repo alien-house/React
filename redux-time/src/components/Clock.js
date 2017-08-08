@@ -20,8 +20,8 @@ export default class Clock extends Component {
 
     return (
       <div className="clock" style={styles}>
-        <span className="clock__time">{hour}:{minutes}:{seconds}</span>
-        <span className="clock__color">#{hour}{minutes}{seconds}</span>
+        <span className="clock-time">{hour}:{minutes}:{seconds}</span>
+        <span className="clock-color">#{hour}{minutes}{seconds}</span>
       </div>
     );
   }
