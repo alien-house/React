@@ -12,8 +12,6 @@
 .contents-wrap{
   color: #494949;
 }
-
-
 .contents-title{
   color: #41a4ef;
   font-size: 1.8rem;
@@ -74,5 +72,21 @@
   padding:15px 10px;
 }
 
-
+/* ========================= */
+.pagination{}
+.pagination li{
+  display: inline-block;
+  margin: 2px;
+}
+.pagination a{
+  cursor: pointer;
+  padding: 5px;
+}
+.pagination .active{
+  color: #fff;
+  background:#41a4ef; 
+}
+.pagination .active a{
+  color: #fff;
+}
 

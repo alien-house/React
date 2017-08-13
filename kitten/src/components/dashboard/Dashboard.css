@@ -62,8 +62,26 @@
 .dashboard-content{
   color: #333;
 }
-.dashboard-title{
-  color: #41a4ef;
-  font-weight: bold;
-  margin: 0 0 1em;
+.setting-box{
+  overflow: hidden;
 }
+.dl{}
+.dl dt{
+  margin: 0 0 5px;
+}
+.dl dd{
+  margin: 0 0 10px;
+}
+.input-area{
+  float: left;
+  width: 65%;
+}
+.pic-area{
+  float: right;
+  width: 30%;
+}
+
+
+
+
+

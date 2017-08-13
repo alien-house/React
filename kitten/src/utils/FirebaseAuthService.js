@@ -6,7 +6,7 @@ import * as firebase from "firebase";
 firebase.initializeApp(firebaseConfig);
 export var isLogIn = false;
 export var userData;
-
+export const storageRef = firebase.storage().ref();
 
 export function login(email, password, setRedirectToRefFnc) {
   firebase.auth().signInWithEmailAndPassword(email, password)
@@ -80,17 +80,23 @@ export function updateUserProfile(obj) {
     photoURL: "https://example.com/jane-q-user/profile.jpg"
   }
   */
-  user.updateProfile(obj).then(function() {
-    // Update successful.
-        alert("has saved!");
-  }, function(error) {
-    // An error happened.
-  });
+  console.log("updateUserProfile---------------");
+  console.dir(user);
+  if(user){
+    user.updateProfile(obj).then(function() {
+      // Update successful.
+          alert("has saved!");
+          getUserProfile();
+    }, function(error) {
+      // An error happened.
+    });
+  }
 }
 
 export function getUserProfile() {
   var user = firebase.auth().currentUser;
   console.log("きてる2？"+user);
+  console.dir(user);
   var userDate = {};
   if (user != null) {
     userDate = {
@@ -102,6 +108,7 @@ export function getUserProfile() {
     }
     return userDate;
   }else{
+  console.log("getUserProfile","来てない");
     return false;
   }
 }
@@ -114,6 +121,44 @@ export function updateDatabase(obj) {
   //   profile_picture : imageUrl
   // }
   firebase.database().ref('users/' + userId).set(obj);
+}
+
+export function updateStorage(file, filename, func) {
+  let userId = firebase.auth().currentUser.uid;
+  if(userId == null){
+    userId = getIdToken();
+  }
+  if(userId){
+    var mountainImagesRef = storageRef.child('images/' + userId + '/' + filename + '.jpg');
+    mountainImagesRef.put(file).then(function(snapshot) {
+      console.log('Uploaded a blob or file!');
+      console.dir();
+      getStorage(snapshot.metadata.fullPath);
+      func(snapshot.metadata);
+    });
+
+  }
+}
+
+export function getStorage(dataFullPath) {
+  var pathReference = storageRef.child(dataFullPath);
+    pathReference.getDownloadURL().then(function(url) {
+    // `url` is the download URL for 'images/stars.jpg'
+    // This can be downloaded directly:
+    var xhr = new XMLHttpRequest();
+    xhr.responseType = 'blob';
+    xhr.onload = function(event) {
+      var blob = xhr.response;
+    };
+    xhr.open('GET', url);
+    xhr.send();
+
+    // Or inserted into an <img> element:
+    var img = document.getElementById('myimg');
+    img.src = url;
+    }).catch(function(error) {
+    // Handle any errors
+  });
 }
 
 export function getDatabase(urlid, objFnc, userID = null) {
@@ -141,7 +186,6 @@ export function getDatabase(urlid, objFnc, userID = null) {
     //  { value: 'one', label: 'One' },
     //  { value: 'two', label: 'Two' }
     // ];
-
   });
 }
 
@@ -159,6 +203,7 @@ export function getUserdata() {
       console.log('useruser::', user);
     }else{
       // isLogIn = false;
+      console.log('getUserdata::', user);
       localStorage.removeItem(ID_TOKEN_KEY);
     }
   });

@@ -1,11 +1,11 @@
 import React from 'react';
 import { getDatabase, getIdToken } from '../../utils/FirebaseAuthService';
 // import Pagination from '../../utils/Pagination';
-import Pager from 'ts-react-pager';
 import fetchJsonp from 'fetch-jsonp'
 import {Creatable} from 'react-select';
 import 'react-select/dist/react-select.css';
 import '../Main.css';
+import ReactPaginate from 'react-paginate';
 
 const JOBURL_INDEED = "http://api.indeed.com/ads/apisearch?publisher=2612264898312897";
 
@@ -13,7 +13,7 @@ export default class Jobs extends React.Component {
 	constructor(){
 		console.log("Jobs.constructor()");
 		super();
-		var num = 0;
+		this.perPage = 10
 		this.state = {
 			jobdata: {
 				results:[]
@@ -21,7 +21,9 @@ export default class Jobs extends React.Component {
 			options:[],
 			devStatus:{},
 			maxPagerDispNum:0,
-            currentPage:1
+            currentPage:1,
+			data: [],
+			offset: 0
 		};
 		// console.log("Jobs.getIdToken()"+getIdToken());
 
@@ -29,25 +31,25 @@ export default class Jobs extends React.Component {
 
 		getDatabase('devStatus',
 			(objDate) => { 
-				console.log("==========^^============");
+				// console.log("==========^^============");
 				var obj = [];
 				var objArray = objDate.split(",");
 				objArray.forEach(function(item, index){
 					obj[index] = {value: item, label: item};
 				});
-				console.log(obj);
+				// console.log(obj);
 				this.setState({ options: obj })
 			}
 		);
 		getDatabase('users',
 			(objDate) => { 
-				console.log("======================");
-				console.log(objDate);
+				// console.log("======================");
+				// console.log(objDate);
 				this.setState({ devStatus: objDate.devStatus })
 
 		var TargetString = this.state.devStatus.replace(/\s+/g, "+").toLowerCase();
-		console.log("@@:"+TargetString);
-		var url = JOBURL_INDEED + '&q='+TargetString+'&l=vancouver%2C+bc&sort=&radius=&st=&jt=&limit=&fromage=&filter=&latlong=1&co=ca&chnl=&userip=1.2.3.4&useragent=Mozilla/%2F4.0(Firefox)&v=2&format=json&start=5';
+		// console.log("@@:"+TargetString);
+		var url = JOBURL_INDEED + '&q='+TargetString+'&l=vancouver%2C+bc&sort=&radius=&st=&jt=&limit=&fromage=&filter=&latlong=1&co=ca&chnl=&userip=1.2.3.4&useragent=Mozilla/%2F4.0(Firefox)&v=2&format=json&start=0';
 		this.getData(url);
 			},
 			getIdToken()
@@ -87,19 +89,23 @@ export default class Jobs extends React.Component {
 	// }
 
 	logChange(val) {
-		console.log("Selected: " + JSON.stringify(val));
+		// console.log("Selected: " + JSON.stringify(val));
+		// console.log("this.perPage: " + this.perPage);
+	    let selected = val.selected + 1;
+	    let offset = Math.ceil(selected * this.perPage);
 		this.setState({
-			jobsearch: val,
 			options: this.state.options
 		});
-		var url = JOBURL_INDEED + '&l=vancouver%2C+bc&sort=&radius=&st=&jt=&start=&limit=&fromage=&filter=&latlong=1&co=ca&chnl=&userip=1.2.3.4&useragent=Mozilla/%2F4.0(Firefox)&v=2&format=json';
-		var words = "";
-		val.map(function(data, i){
-			words += data.value;
-			if(i !== (val.length - 1)){ words += "+";}
-        	return data;
-		});
-		url += "&q=" + words;
+
+		var TargetString = this.state.devStatus.replace(/\s+/g, "+").toLowerCase();
+		var url = JOBURL_INDEED + '&q='+TargetString+'&l=vancouver%2C+bc&sort=&radius=&st=&jt=&limit=&fromage=&filter=&latlong=1&co=ca&chnl=&userip=1.2.3.4&useragent=Mozilla/%2F4.0(Firefox)&v=2&format=json&start='+offset;
+		// var words = "";
+		// val.map(function(data, i){
+		// 	words += data.value;
+		// 	if(i !== (val.length - 1)){ words += "+";}
+  //       	return data;
+		// });
+		// url += "&q=" + words;
 		this.getData(url);
 	}
 
@@ -109,39 +115,22 @@ export default class Jobs extends React.Component {
 		  .then(function(response) {
 		    return response.json()
 		  }).then(function(json) {
-		    console.log(json)
+		    // console.log(json)
 		    that.setState({ jobdata: json });
+			that.setState({pageCount: Math.ceil(json.totalResults / json.results.length)});
 		  }).catch(function(ex) {
-		    console.log('parsing failed', ex)
+		    // console.log('parsing failed', ex)
 		  })
-	}
-
-	handlePaging(pageNum) {
-		this.setState({data:this.state.jobdata.results, currentPage:pageNum})
-	}
-
-	setListNum(pageNum){
-
 	}
 
 	render(selectProps) {
 		const jobdata = this.state.jobdata;
 		const maxNum = this.state.jobdata.totalResults;
-		const listNum = Math.ceil(maxNum / 10);
 		//     console.log('maxNum', maxNum)
 		// this.setState({maxPagerDispNum:listNum});
-		console.log('jobdata', jobdata);
-		console.log('jobdatamaxNum', jobdata.results.length);
+		// console.log('jobdata', jobdata);
+		// console.log('jobdatamaxNum', jobdata.results.length);
 
-		var o = {
-		  dataLength:jobdata.results.length,  // Your data's length.
-		  handler: this.handlePaging,         // Gets called when page is changed. You must implement your own. Otherwise crashes.
-		  pageSize: listNum,      // Max page number to display.
-		  maxPagerDispNum: 5,                 // (Optional) Max number of 'pager' to display. (default is 3)
-		  currentPage: this.state.currentPage // Your current page should be set in your state.
-		}
-		const pager = () => {return (<Pager class="pagination" cobject={o} />)};
-		console.log('pager::', pager);
 
 		// var jobdataLoadCheck = false;
 		// if(jobdata){
@@ -185,11 +174,22 @@ export default class Jobs extends React.Component {
 					onChange={this.logChange}
 					{...selectProps} />
 				<div className="jobs">
-					{pager}
+					
 					<div className="jobs-resultnum">{maxNum} results</div>
 					<div className="jobs-box">
 						{jobdatas}
 					</div>
+					<ReactPaginate previousLabel={"previous"}
+                       nextLabel={"next"}
+                       breakLabel={<a href="">...</a>}
+                       breakClassName={"break-me"}
+                       pageCount={this.state.pageCount}
+                       marginPagesDisplayed={2}
+                       pageRangeDisplayed={5}
+                       onPageChange={this.logChange}
+                       containerClassName={"pagination"}
+                       subContainerClassName={"pages pagination"}
+                       activeClassName={"active"} />
 				</div>
 			</div>
 		);

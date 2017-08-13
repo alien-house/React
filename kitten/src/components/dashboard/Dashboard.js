@@ -15,7 +15,7 @@ export default class Dashboard extends React.Component {
      //  )
 		return (
 			<div>
-				<h1 className="dashboard-title">Dashboard</h1>
+				<h1 className="contents-title">Dashboard</h1>
 				<div>
 					
 				</div>

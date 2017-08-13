@@ -32,7 +32,7 @@ class App extends Component {
 			<div className="App">
 				<Gnav />
 				<div className="container">
-	        		<DBnav url={"dashboard"} />
+	        		<DBnav url={"/dashboard"} />
 	        		<div className="dashboard-content">
 						<PrivateRoute path="/dashboard" component={Dashboard}/>
 						<Route path="/jobs" name="jobs" component={Jobs}/>

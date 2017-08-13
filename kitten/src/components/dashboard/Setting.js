@@ -3,7 +3,7 @@ import React from 'react';
 // import { Redirect } from 'react-router-dom';
 import Select from 'react-select';
 import 'react-select/dist/react-select.css';
-import { updateUserProfile, getUserProfile, getDatabase, updateDatabase } from '../../utils/FirebaseAuthService';
+import { updateUserProfile, getUserdata, getUserProfile, getDatabase, updateDatabase, updateStorage } from '../../utils/FirebaseAuthService';
 // import {
 //   BrowserRouter as Router,
 //   Route,
@@ -11,7 +11,6 @@ import { updateUserProfile, getUserProfile, getDatabase, updateDatabase } from '
 //   Redirect,
 //   withRouter
 // } from 'react-router-dom'
-
 
 export default class Setting extends React.Component {
 
@@ -25,11 +24,12 @@ export default class Setting extends React.Component {
 	}
 	
 	componentWillMount(){
+     	// getUserdata();
      	var userData = getUserProfile();
      	// console.log(userData);
 		this.state = userData;
 		getDatabase('devStatus',
-			(objDate) => { 
+			(objDate) => {
 				var obj = [];
 				console.log("======================");
 				var objArray = objDate.split(",");
@@ -49,6 +49,13 @@ export default class Setting extends React.Component {
 			}
 		);
 	}
+	// componentDidMount(){
+	// 	getUserProfile();
+ //    	let userDate = {
+	// 	      photoURL : "httpp::::tetestest.jpg"
+	// 	    };
+	// 	updateUserProfile(userDate);
+	// }
 
 	handleChange(event) {
     	const target = event.target;
@@ -57,6 +64,27 @@ export default class Setting extends React.Component {
 		this.setState({
 			[name]: value
 		});
+	}
+
+	handleImgChange(event){
+		var files = event.target.files;
+    	const target = event.target;
+    	const value = target.value;
+    	const name = target.name;
+    	let userDate = {};
+		console.log("event.target:::::"+name);
+		console.log("event.target:::::"+files);
+		updateStorage(files[0], 'profile', function(metadata){
+			updateUserProfile(
+			    userDate = {
+			      photoURL : metadata.fullPath
+			    });
+		});
+		getUserProfile();
+		// var mountainImagesRef = storageRef.child('images/mountains.jpg');
+		// mountainImagesRef.put(files[0]).then(function(snapshot) {
+		//   console.log('Uploaded a blob or file!');
+		// });
 	}
 
 	handleSubmit(event) {
@@ -111,21 +139,62 @@ export default class Setting extends React.Component {
      //  )
 		return (
 			<div>
-				<h1 className="dashboard-title">Setting</h1>
-				<dl>
-					<dt>nick name</dt>
-					<dd><input type="text" name="name" value={this.state.name} onChange={this.handleChange} /></dd>
-					<dt>email</dt>
-					<dd><input type="text" name="email" value={this.state.email} onChange={this.handleChange} /></dd>
-					<dt>status</dt>
-					<dd><Select name="devStatus" value={this.state.devStatus} options={this.state.options} onChange={this.logChange} /></dd>
-				</dl>
-				<button id="btn-signIn" onClick={this.handleSubmit}>update</button>
+				<h1 className="contents-title">Setting</h1>
+				<div className="unit-card">
+					<article>
+						<h2>Profile</h2>
+						<div className="setting-box">
+
+							<div className="input-area">
+								<dl className="dl">
+									<dt>Name</dt>
+									<dd><input type="text" name="name" value={this.state.name} onChange={this.handleChange} /></dd>
+									<dt>Your Role</dt>
+									<dd><Select name="devStatus" value={this.state.devStatus} options={this.state.options} onChange={this.logChange} /></dd>
+									<dt>E-mail</dt>
+									<dd><input type="text" name="email" value={this.state.email} onChange={this.handleChange} /></dd>
+									<dt>Bio</dt>
+									<dd><textarea rows="4" cols="50" onChange={this.handleChange}>{this.state.bio}</textarea></dd>
+									<dt>Location</dt>
+									<dd><input type="text" name="location" value={this.state.location} onChange={this.handleChange} /></dd>
+									<dt>URL</dt>
+									<dd><input type="text" name="url" value={this.state.url} onChange={this.handleChange} /></dd>
+									<dt>Company</dt>
+									<dd><input type="text" name="company" value={this.state.company} onChange={this.handleChange} /></dd>
+									<dt>Linkedin</dt>
+									<dd><input type="text" name="linkedin" value={this.state.linkedin} onChange={this.handleChange} /></dd>
+									<dt>Twitter</dt>
+									<dd><input type="text" name="twitter" value={this.state.twitter} onChange={this.handleChange} /></dd>
+									<dt>GitHub</dt>
+									<dd><input type="text" name="github" value={this.state.github} onChange={this.handleChange} /></dd>
+									<dt>Facebook</dt>
+									<dd><input type="text" name="facebook" value={this.state.facebook} onChange={this.handleChange} /></dd>
+									<dt>Dribbble</dt>
+									<dd><input type="text" name="dribbble" value={this.state.dribbble} onChange={this.handleChange} /></dd>
+								</dl>
+								<button id="btn-signIn" onClick={this.handleSubmit}>update</button>
+							</div>
+
+							<div className="pic-area">
+								<div className="pic-area">
+									<img src="" id="myimg" />
+								</div>
+								<input name="images" type="file" onChange={this.handleImgChange} />
+							</div>
+							
+						</div>
+					</article>
+				</div>
 			</div>
 		);
 	}
 
 }
+/*
+
+								<button id="btn-signIn" onClick={this.handleImgSubmit}>update</button>
+*/
+//https://stackoverflow.com/questions/41214447/firebase-user-uploads-and-profile-pictures
 
 // const mapStateToProps = state => ({
 // 	sessionId: state.sessionId
