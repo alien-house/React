@@ -142,24 +142,24 @@ export function updateStorage(file, filename, func) {
 
 export function getStorage(dataFullPath) {
   var pathReference = storageRef.child(dataFullPath);
-    return pathReference.getDownloadURL().then(function(url) {
+  return pathReference.getDownloadURL().then(function(url) {
     // `url` is the download URL for 'images/stars.jpg'
     // This can be downloaded directly:
-    // var xhr = new XMLHttpRequest();
-    // xhr.responseType = 'blob';
-    // xhr.onload = function(event) {
-    //   var blob = xhr.response;
-    // };
-    // xhr.open('GET', url);
-    // xhr.send();
+    var xhr = new XMLHttpRequest();
+    xhr.responseType = 'blob';
+    xhr.onload = function(event) {
+      var blob = xhr.response;
+    };
+    xhr.open('GET', url);
+    xhr.send();
+    console.log("url::"+url);
+  return url;  
 
-    return url;
-
-    // Or inserted into an <img> element:
-    // var img = document.getElementById('myimg');
-    // img.src = url;
-    }).catch(function(error) {
-    // Handle any errors
+  // Or inserted into an <img> element:
+  // var img = document.getElementById('myimg');
+  // img.src = url;
+  }).catch(function(error) {
+  // Handle any errors
   });
 }
 
@@ -178,7 +178,7 @@ export function getDatabase(urlid, objFnc, userID = null) {
       urlid += "/" + urlUserID;
     }
   }else{
-    console.log("getDatabase取得できず");
+    // console.log("getDatabase取得できず");
   }
   
   firebase.database().ref(urlid).once('value').then(function(snapshot) {

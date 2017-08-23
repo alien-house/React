@@ -4,6 +4,7 @@ import React from 'react';
 import Select from 'react-select';
 import 'react-select/dist/react-select.css';
 import { updateUserProfile, /*getUserdata,*/ getUserProfile, getDatabase, updateDatabase, getStorage, updateStorage } from '../../utils/FirebaseAuthService';
+import * as firebase from "firebase";
 // import {
 //   BrowserRouter as Router,
 //   Route,
@@ -21,27 +22,46 @@ export default class Setting extends React.Component {
 		// this.getOptions = this.getOptions.bind(this);
 		this.logChange = this.logChange.bind(this);
 		this.state = {
-			userDate:{}
+			userDate:{
+				userImg:""
+			},
+			userImg:""
 		};
 	}
 	
 	componentWillMount(){
-     	// getUserdata();
+     	/* ================================ 
+     	// get user data
+		================================ */	
      	var userData = getUserProfile();
      	// console.log(userData);
 		this.state.userDate = userData;
-		console.log("objDate.devStatus~~~~~~~~~~~~~~~~~");
-		console.dir(userData);
+		// console.log("objDate.devStatus~~~~~~~~~~~~~~~~~");
+		// console.dir(userData);
 		if(userData){
-			console.log(this.state.userDate.photoURL);
-			var imgurl = getStorage(this.state.userDate.photoURL);
-			console.dir("imgurl::::"+imgurl);
-			console.dir(imgurl);
+			console.log("photoURL:",this.state.userDate.photoURL);
+			var imgPromise = getStorage(this.state.userDate.photoURL);
+
+			imgPromise.then( value => {
+				console.log("Success"); // Success!
+				// console.log(value); // Success!
+				// var img = {userDate:{ userImg: value }};
+				this.setState({ userImg: value });
+				
+			}, reason => {
+				console.log("Error"); // Error!
+			});
+
+
 		}
+
+     	/* ================================ 
+     	// select data retrieve
+		================================ */	
 		getDatabase('devStatus',
 			(objDate) => {
 				var obj = [];
-				console.log("======================");
+				// console.log("======================");
 				var objArray = objDate.split(",");
 				objArray.forEach(function(item, index){
 					obj[index] = {value: item, label: item};
@@ -49,24 +69,20 @@ export default class Setting extends React.Component {
 				this.setState({ options: obj })
 			}
 		);
+     	/* ================================ 
+     	// user data from database
+		================================ */	
 		getDatabase('users',
 			(objDate) => { 
-				console.log("==========^^============");
-				console.dir(objDate);
-				console.log(objDate.devStatus);
+				// console.log("==========^^============");
+				// console.dir(objDate);
+				// console.log(objDate.devStatus);
 				this.setState({
 					devStatus: objDate.devStatus
 				});
 			}
 		);
 	}
-	// componentDidMount(){
-	// 	getUserProfile();
- //    	let userDate = {
-	// 	      photoURL : "httpp::::tetestest.jpg"
-	// 	    };
-	// 	updateUserProfile(userDate);
-	// }
 
 	handleChange(event) {
     	const target = event.target;
@@ -83,12 +99,14 @@ export default class Setting extends React.Component {
     	// const value = target.value;
     	// const name = target.name;
     	let userDate = {};
-		console.log("event.target:::::"+name);
-		console.log("event.target:::::"+files);
 		updateStorage(files[0], 'profile', function(metadata){
+		// console.log("metadata:::"+metadata);
+		console.dir(metadata);
 			updateUserProfile(
 			    userDate = {
+			      // photoURL : null
 			      photoURL : metadata.fullPath
+			      // photoURL : metadata.downloadURLs[0]
 			    });
 		});
 		getUserProfile();
@@ -188,7 +206,7 @@ export default class Setting extends React.Component {
 
 							<div className="pic-area">
 								<div className="pic-area">
-									<img src={this.state.userDate.photoURL} id="myimg" alt="de" />
+									<img src={this.state.userImg} id="myimg" alt="de" />
 								</div>
 								<input name="images" type="file" onChange={this.handleImgChange} />
 							</div>
