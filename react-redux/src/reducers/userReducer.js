@@ -1,3 +1,4 @@
+//初期状態を設定できる
 const userReducer = (state = {
   name: "Max",
   age: 27

@@ -8,14 +8,15 @@ import FontAwesome from 'react-fontawesome';
 export default class DBNav extends Component {
 
   render() {
-    console.log("this.props:"+this.props);
-    console.dir(this.props);
+    // console.log("this.props:"+this.props);
+    // console.dir(this.props);
     const url = this.props.url
     return (
-      <div className="dashboard-nav">
+      <div className="dashboard-nav" style={{ display: this.props.loginState ? '' : 'none' }}>
         <ul>
           <li><NavLink activeClassName="active" exact to={`${url}`}><FontAwesome name='tachometer' />Dashboard</NavLink></li>
           <li><NavLink activeClassName="active" to={`${url}/setting`}><FontAwesome name='cog' />Setting</NavLink></li>
+          <li><NavLink activeClassName="active" to={`${url}/resume`}><FontAwesome name='file-text-o' />Resume</NavLink></li>
         </ul>
       </div>
     );

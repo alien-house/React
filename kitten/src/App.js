@@ -16,23 +16,33 @@ import './App.css';
 
 class App extends Component {
 	constructor(){
-	super();
-	this.state = {
-		uid: null
-	};
-	const getIsLogin = (uid) => {
-		this.setState({uid:uid});
+		super();
+		this.state = {
+			uid: null
+		};
+		const getIsLogin = (uid) => {
+			this.setState({uid:uid});
+		}
+		requireAuth(getIsLogin);
+		// console.log("only one time <3");
 	}
-	requireAuth(getIsLogin);
-	// console.log("only one time <3");
-	}
+	// componentWillMount() {
+	// 	if(this.state.uid){
+	// 		console.log("tルエ");
+	// 		console.log(this.state.uid);
+	// 	}else{
+	// 		console.log("de");
+	// 		console.log(this.state.uid);
+	// 	}
+	// 	console.log("IndexIndexIndex",this.state.uid ? 'none' : 'e');
+	// }
   render() {
     return (
 		<Router history={browserHistory}>
 			<div className="App">
-				<Gnav />
+				<Gnav loginState={this.state.uid} />
 				<div className="container">
-	        		<DBnav url={"/dashboard"} />
+	        		<DBnav loginState={this.state.uid} url={"/dashboard"} />
 	        		<div className="dashboard-content">
 						<PrivateRoute path="/dashboard" component={Dashboard}/>
 						<Route path="/jobs" name="jobs" component={Jobs}/>

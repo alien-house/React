@@ -27,8 +27,8 @@ export function login(email, password, setRedirectToRefFnc) {
     .catch(function(error) {
       var errorCode = error.code;
       var errorMessage = error.message;
-      console.log("@"+errorCode);
-      console.log("@__@"+errorMessage);
+      // console.log("@"+errorCode);
+      // console.log("@__@"+errorMessage);
     });
 
 }
@@ -44,7 +44,7 @@ export function login(email, password, setRedirectToRefFnc) {
 export function register(email, password) {
   firebase.auth().createUserWithEmailAndPassword(email, password).then(function(user) {
         // var user = firebase.auth().currentUser;
-      console.log(user);
+      // console.log(user);
       alert('Your account has created!');
         // logUser(user); // Optional
     },function(error) {
@@ -59,7 +59,7 @@ export function register(email, password) {
       // if(error == null){
       //  alert('Your account has created!');
       // }
-      console.log(error);
+      // console.log(error);
       // [END_EXCLUDE]
     });
 
@@ -80,13 +80,13 @@ export function updateUserProfile(obj) {
     photoURL: "https://example.com/jane-q-user/profile.jpg"
   }
   */
-  console.log("updateUserProfile---------------");
-  console.dir(user);
+  // console.log("updateUserProfile---------------");
+  // console.dir(user);
   if(user){
     user.updateProfile(obj).then(function() {
       // Update successful.
           alert("has saved!");
-          getUserProfile();
+          // getUserProfile();
     }, function(error) {
       // An error happened.
     });
@@ -95,20 +95,20 @@ export function updateUserProfile(obj) {
 
 export function getUserProfile() {
   var user = firebase.auth().currentUser;
-  console.log("きてる2？"+user);
-  console.dir(user);
+  // console.log("きてる2？"+user);
+  // console.dir(user);
   var userDate = {};
   if (user != null) {
     userDate = {
       name : user.displayName,
       email : user.email,
-      photoUrl : user.photoURL,
+      photoURL : user.photoURL,
       emailVerified : user.emailVerified,
       uid : user.uid
     }
     return userDate;
   }else{
-  console.log("getUserProfile","来てない");
+  // console.log("getUserProfile","来てない");
     return false;
   }
 }
@@ -131,8 +131,8 @@ export function updateStorage(file, filename, func) {
   if(userId){
     var mountainImagesRef = storageRef.child('images/' + userId + '/' + filename + '.jpg');
     mountainImagesRef.put(file).then(function(snapshot) {
-      console.log('Uploaded a blob or file!');
-      console.dir();
+      // console.log('Uploaded a blob or file!');
+      // console.dir(snapshot.metadata.fullPath);
       getStorage(snapshot.metadata.fullPath);
       func(snapshot.metadata);
     });
@@ -142,20 +142,22 @@ export function updateStorage(file, filename, func) {
 
 export function getStorage(dataFullPath) {
   var pathReference = storageRef.child(dataFullPath);
-    pathReference.getDownloadURL().then(function(url) {
+    return pathReference.getDownloadURL().then(function(url) {
     // `url` is the download URL for 'images/stars.jpg'
     // This can be downloaded directly:
-    var xhr = new XMLHttpRequest();
-    xhr.responseType = 'blob';
-    xhr.onload = function(event) {
-      var blob = xhr.response;
-    };
-    xhr.open('GET', url);
-    xhr.send();
+    // var xhr = new XMLHttpRequest();
+    // xhr.responseType = 'blob';
+    // xhr.onload = function(event) {
+    //   var blob = xhr.response;
+    // };
+    // xhr.open('GET', url);
+    // xhr.send();
+
+    return url;
 
     // Or inserted into an <img> element:
-    var img = document.getElementById('myimg');
-    img.src = url;
+    // var img = document.getElementById('myimg');
+    // img.src = url;
     }).catch(function(error) {
     // Handle any errors
   });
@@ -165,7 +167,7 @@ export function getDatabase(urlid, objFnc, userID = null) {
   // var data;
   var user = firebase.auth().currentUser;
   if (user != null || userID != null) {
-    console.log("きてる＿？"+user);
+    // console.log("きてる＿？"+user);
     var urlUserID;
     if(user == null){
       urlUserID = userID;
@@ -189,8 +191,37 @@ export function getDatabase(urlid, objFnc, userID = null) {
   });
 }
 
+
+
+export function getDatabaseTest() {
+  // var data;
+  // var user = firebase.auth().currentUser;
+  // if (user != null) {
+  //   // console.log("きてる＿？"+user);
+  //   var urlUserID;
+  //   if(user == null){
+  //   }else{
+  //     urlUserID = firebase.auth().currentUser.uid;
+  //   }
+  // }else{
+  //   console.log("getDatabase取得できず");
+  // }
+  
+  return firebase.database().ref('devStatus').once('value').then(function(snapshot) {
+    // console.log(snapshot.val());
+    return snapshot.val();
+  });
+}
+
+
+
+
+
+
+
+
 export function isAuthenticated() {
-  console.log("tonnda");
+  // console.log("tonnda");
   return !!firebase.auth().currentUser || !!localStorage.getItem(ID_TOKEN_KEY);
 }
 
@@ -200,14 +231,16 @@ export function getUserdata() {
       // isLogIn = true;
       localStorage.setItem(ID_TOKEN_KEY, user.uid);
       userData = user;
-      console.log('useruser::', user);
+      // console.log('useruser::', user);
     }else{
       // isLogIn = false;
-      console.log('getUserdata::', user);
+      // console.log('getUserdata::', user);
       localStorage.removeItem(ID_TOKEN_KEY);
     }
   });
 }
+
+
 
 export function requireAuth(getIsLogin) {
   // console.log("きてる＿？"+getIsLogin);

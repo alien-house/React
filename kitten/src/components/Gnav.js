@@ -9,8 +9,8 @@ import './Gnav.css';
 export default class Gnav extends Component {
 
   render() {
-    const url = this.props.url
-    console.log("url:"+url);
+    // const url = this.props.url
+    // console.log("url:"+url);
     return (
       <div className="header">
         <div className="glogo"><Link to="/"><img src={logo} className="g-logo" alt="kitten" /></Link></div>
@@ -20,10 +20,9 @@ export default class Gnav extends Component {
             <li><Link to="/jobs">Jobs</Link></li>
           </ul>
           <ul>
-            <li><Link to="/dashboard" >Dashboard</Link></li>
-            <li><button className="btn btn-danger log" onClick={() => logout()}>Log out </button></li>
-            <li><Link to="/login/register">Register</Link></li>
-            <li><Link to="/login/signin" >SignIn</Link></li>
+            <li style={{ display: this.props.loginState ? '' : 'none' }}><button className="btn btn-danger log" onClick={() => logout()}>Log out </button></li>
+            <li style={{ display: this.props.loginState ? 'none' : '' }}><Link to="/login/register">Register</Link></li>
+            <li style={{ display: this.props.loginState ? 'none' : '' }}><Link to="/login/signin" >SignIn</Link></li>
           </ul>
         </nav>
       </div>

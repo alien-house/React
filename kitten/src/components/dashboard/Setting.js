@@ -3,7 +3,7 @@ import React from 'react';
 // import { Redirect } from 'react-router-dom';
 import Select from 'react-select';
 import 'react-select/dist/react-select.css';
-import { updateUserProfile, getUserdata, getUserProfile, getDatabase, updateDatabase, updateStorage } from '../../utils/FirebaseAuthService';
+import { updateUserProfile, /*getUserdata,*/ getUserProfile, getDatabase, updateDatabase, getStorage, updateStorage } from '../../utils/FirebaseAuthService';
 // import {
 //   BrowserRouter as Router,
 //   Route,
@@ -20,14 +20,24 @@ export default class Setting extends React.Component {
 		this.handleSubmit = this.handleSubmit.bind(this);
 		// this.getOptions = this.getOptions.bind(this);
 		this.logChange = this.logChange.bind(this);
-		this.state = {};
+		this.state = {
+			userDate:{}
+		};
 	}
 	
 	componentWillMount(){
      	// getUserdata();
      	var userData = getUserProfile();
      	// console.log(userData);
-		this.state = userData;
+		this.state.userDate = userData;
+		console.log("objDate.devStatus~~~~~~~~~~~~~~~~~");
+		console.dir(userData);
+		if(userData){
+			console.log(this.state.userDate.photoURL);
+			var imgurl = getStorage(this.state.userDate.photoURL);
+			console.dir("imgurl::::"+imgurl);
+			console.dir(imgurl);
+		}
 		getDatabase('devStatus',
 			(objDate) => {
 				var obj = [];
@@ -42,6 +52,7 @@ export default class Setting extends React.Component {
 		getDatabase('users',
 			(objDate) => { 
 				console.log("==========^^============");
+				console.dir(objDate);
 				console.log(objDate.devStatus);
 				this.setState({
 					devStatus: objDate.devStatus
@@ -68,9 +79,9 @@ export default class Setting extends React.Component {
 
 	handleImgChange(event){
 		var files = event.target.files;
-    	const target = event.target;
-    	const value = target.value;
-    	const name = target.name;
+    	// const target = event.target;
+    	// const value = target.value;
+    	// const name = target.name;
     	let userDate = {};
 		console.log("event.target:::::"+name);
 		console.log("event.target:::::"+files);
@@ -148,11 +159,11 @@ export default class Setting extends React.Component {
 							<div className="input-area">
 								<dl className="dl">
 									<dt>Name</dt>
-									<dd><input type="text" name="name" value={this.state.name} onChange={this.handleChange} /></dd>
+									<dd><input type="text" name="name" value={this.state.userDate.name} onChange={this.handleChange} /></dd>
 									<dt>Your Role</dt>
 									<dd><Select name="devStatus" value={this.state.devStatus} options={this.state.options} onChange={this.logChange} /></dd>
 									<dt>E-mail</dt>
-									<dd><input type="text" name="email" value={this.state.email} onChange={this.handleChange} /></dd>
+									<dd><input type="text" name="email" value={this.state.userDate.email} onChange={this.handleChange} /></dd>
 									<dt>Bio</dt>
 									<dd><textarea rows="4" cols="50" onChange={this.handleChange}>{this.state.bio}</textarea></dd>
 									<dt>Location</dt>
@@ -177,7 +188,7 @@ export default class Setting extends React.Component {
 
 							<div className="pic-area">
 								<div className="pic-area">
-									<img src="" id="myimg" />
+									<img src={this.state.userDate.photoURL} id="myimg" alt="de" />
 								</div>
 								<input name="images" type="file" onChange={this.handleImgChange} />
 							</div>

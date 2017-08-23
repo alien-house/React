@@ -1,4 +1,4 @@
-export function parseTime(date=new Date()) {
+export function parseTime(date = new Date()) {
   return {
     hour: date.getHours(),
     minutes: date.getMinutes(),

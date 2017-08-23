@@ -25,7 +25,7 @@ class App extends Component {
   }
 }
 
-// for typechecking
+// for type validation
 App.propTypes = {
   syncDate: PropTypes.func.isRequired,
   time: PropTypes.shape({
@@ -35,18 +35,29 @@ App.propTypes = {
   })
 };
 
+//それぞれStoreのstateとdispatchメソッドをpropsを通して、Container Componentで扱えるようにするものです。
+
+//mapStateToPropsは、一枚岩のでっかいstateの中から、対象のコンポーネントに合ったプロパティを生成する為のものです。
+//ここに全てのstateが表示される？なくてもいいらしい？
 const mapStateToProps = (state) => {
   return {
+    // propsを通して取得する際に使う名前: Storeのstateの値
     time: state.clock
   };
 };
+//mapDispatchToPropsは、dispatch関数を受け取ってプロパティに変換します。
+//dispatchでアクションを呼び起こす。
 const mapDispatchToProps = (dispatch) => {
   return {
+    // propsを通して取得する際に使う名前
     syncDate: () => {
+      // Storeのdispatchメソッド（引数はAction Creator）
+      //状態（state）の更新を許可
       dispatch(syncDate());
     }
   };
 };
+//connectは、ReduxとReactのコンポーネントを繋ぎ込む為のメソッド
 export default connect(mapStateToProps, mapDispatchToProps)(App);
     
 
