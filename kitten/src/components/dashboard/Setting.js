@@ -3,8 +3,11 @@ import React from 'react';
 // import { Redirect } from 'react-router-dom';
 import Select from 'react-select';
 import 'react-select/dist/react-select.css';
-import { updateUserProfile, /*getUserdata,*/ getUserProfile, getDatabase, updateDatabase, getStorage, updateStorage } from '../../utils/FirebaseAuthService';
-import * as firebase from "firebase";
+import { updateUserProfile, /*getUserdata,*/ getUserProfile, getDatabase, updateDatabase, getStorage, updateStorage, updateStorageBase64 } from '../../utils/FirebaseAuthService';
+import Cropper from 'react-cropper';
+import 'cropperjs/dist/cropper.css';
+import {ModalContainer, ModalDialog} from 'react-modal-dialog';
+// import ReactSpinner from 'react-spinjs';
 // import {
 //   BrowserRouter as Router,
 //   Route,
@@ -18,14 +21,18 @@ export default class Setting extends React.Component {
 	constructor(){
 		super();
 		this.handleChange = this.handleChange.bind(this);
+		this.uploadCropImg = this.uploadCropImg.bind(this);
 		this.handleSubmit = this.handleSubmit.bind(this);
+		this.handleImgChange = this.handleImgChange.bind(this);
 		// this.getOptions = this.getOptions.bind(this);
 		this.logChange = this.logChange.bind(this);
 		this.state = {
 			userDate:{
 				userImg:""
 			},
-			userImg:""
+			userImg:"",
+    		isShowingModal: false,
+    		imgUrl:""
 		};
 	}
 	
@@ -41,7 +48,6 @@ export default class Setting extends React.Component {
 		if(userData){
 			console.log("photoURL:",this.state.userDate.photoURL);
 			var imgPromise = getStorage(this.state.userDate.photoURL);
-
 			imgPromise.then( value => {
 				console.log("Success"); // Success!
 				// console.log(value); // Success!
@@ -51,10 +57,7 @@ export default class Setting extends React.Component {
 			}, reason => {
 				console.log("Error"); // Error!
 			});
-
-
 		}
-
      	/* ================================ 
      	// select data retrieve
 		================================ */	
@@ -84,6 +87,12 @@ export default class Setting extends React.Component {
 		);
 	}
 
+ 	/* ================================ 
+ 	// modal
+	================================ */	
+	handleClick = () => this.setState({isShowingModal: true});
+	handleClose = () => this.setState({isShowingModal: false});
+
 	handleChange(event) {
     	const target = event.target;
     	const value = target.value;
@@ -93,28 +102,45 @@ export default class Setting extends React.Component {
 		});
 	}
 
-	handleImgChange(event){
-		var files = event.target.files;
-    	// const target = event.target;
-    	// const value = target.value;
-    	// const name = target.name;
+	uploadCropImg(event){
+		// console.dir(this.refs.cropper.getCroppedCanvas());
+		let imgfile = this.refs.cropper.getCroppedCanvas().toDataURL();
+		let imgbase64 = imgfile.split(',');
+		console.dir(imgbase64[1]);
     	let userDate = {};
-		updateStorage(files[0], 'profile', function(metadata){
-		// console.log("metadata:::"+metadata);
-		console.dir(metadata);
+		updateStorageBase64(imgbase64[1], 'profile', function(metadata){
+			console.dir(metadata);
 			updateUserProfile(
 			    userDate = {
-			      // photoURL : null
 			      photoURL : metadata.fullPath
-			      // photoURL : metadata.downloadURLs[0]
 			    });
+			this.setState({isShowingModal: false});
 		});
 		getUserProfile();
-		// var mountainImagesRef = storageRef.child('images/mountains.jpg');
-		// mountainImagesRef.put(files[0]).then(function(snapshot) {
-		//   console.log('Uploaded a blob or file!');
-		// });
 	}
+
+
+  _crop(){
+    // image in dataUrl
+    // console.log(this.refs.cropper.getCroppedCanvas().toDataURL());
+  }
+	handleImgChange(event){
+		var files = event.target.files;
+		// console.dir(files[0]);
+		var that = this;
+		this.setState({isShowingModal: true});
+        if (files && files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+            	var img = document.getElementById('blah');
+            	// img.setAttribute('src',e.target.result);
+				that.setState({imgUrl: e.target.result});
+                // $('#blah').attr('src', e.target.result);
+            }
+            reader.readAsDataURL(files[0]);
+        }
+	}
+
 
 	handleSubmit(event) {
 		var name = this.state.name;
@@ -205,10 +231,32 @@ export default class Setting extends React.Component {
 							</div>
 
 							<div className="pic-area">
-								<div className="pic-area">
-									<img src={this.state.userImg} id="myimg" alt="de" />
-								</div>
+								<img src={this.state.userImg} id="myimg" alt="de" />
 								<input name="images" type="file" onChange={this.handleImgChange} />
+								<div>
+								{
+								this.state.isShowingModal &&
+								<ModalContainer onClose={this.handleClose}>
+								  <ModalDialog className="md" onClose={this.handleClose}>
+								    <h1>Uploding image</h1>
+								    <p>Please trim your image, before upload.</p>
+								    <Cropper
+								    id="blah"
+								    className="preview-img"
+							        ref='cropper'
+							        src={this.state.imgUrl}
+							        // style={{height: 400, width: '100%'}}
+							        // Cropper.js options
+							        aspectRatio={2 / 2}
+							        guides={false}
+							        alt="your image"
+							        crop={this._crop.bind(this)} />
+							        <button onClick={this.uploadCropImg}>Crop &amp; Upload</button>
+								  </ModalDialog>
+								</ModalContainer>
+								}
+								</div>
+ 
 							</div>
 							
 						</div>
@@ -217,9 +265,20 @@ export default class Setting extends React.Component {
 			</div>
 		);
 	}
-
 }
+// const ModalWin = () => (
+// )
 /*
+     <Cropper
+        ref='cropper'
+        src='https://avatars0.githubusercontent.com/u/760314?v=4&s=400'
+        style={{height: 400, width: '100%'}}
+        // Cropper.js options
+        aspectRatio={16 / 9}
+        guides={false}
+        crop={this._crop.bind(this)} />
+
+
 
 								<button id="btn-signIn" onClick={this.handleImgSubmit}>update</button>
 */

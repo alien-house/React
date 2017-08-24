@@ -81,7 +81,14 @@
   width: 30%;
 }
 
-
-
+.md{
+  min-width:500px; 
+}
+.preview-img{
+  width:500px; 
+  max-width:500px; 
+  height:auto; 
+  max-width:400px; 
+}
 
 

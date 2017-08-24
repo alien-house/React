@@ -140,6 +140,22 @@ export function updateStorage(file, filename, func) {
   }
 }
 
+export function updateStorageBase64(message, filename, func) {
+  let userId = firebase.auth().currentUser.uid;
+  if(userId == null){
+    userId = getIdToken();
+  }
+  if(userId){
+    var mountainImagesRef = storageRef.child('images/' + userId + '/' + filename + '.jpg');
+    mountainImagesRef.putString(message, 'base64').then(function(snapshot) {
+      console.log('Uploaded a base64url string!');
+        getStorage(snapshot.metadata.fullPath);
+        func(snapshot.metadata);
+    });
+  }
+}
+
+
 export function getStorage(dataFullPath) {
   var pathReference = storageRef.child(dataFullPath);
   return pathReference.getDownloadURL().then(function(url) {
