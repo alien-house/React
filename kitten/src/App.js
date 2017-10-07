@@ -6,22 +6,22 @@ import DBnav from './components/dashboard/DBNav';
 import Jobs from "./components/jobs/Jobs"
 import { requireAuth, isAuthenticated } from './utils/FirebaseAuthService';
 
-import { 
-  BrowserRouter as Router,
-  Route,
-  Redirect,
-  browserHistory
+import {
+	BrowserRouter as Router,
+	Route,
+	Redirect,
+	browserHistory
 } from 'react-router-dom'
 import './App.css';
 
 class App extends Component {
-	constructor(){
+	constructor() {
 		super();
 		this.state = {
 			uid: null
 		};
 		const getIsLogin = (uid) => {
-			this.setState({uid:uid});
+			this.setState({ uid: uid });
 		}
 		requireAuth(getIsLogin);
 		// console.log("only one time <3");
@@ -36,35 +36,36 @@ class App extends Component {
 	// 	}
 	// 	console.log("IndexIndexIndex",this.state.uid ? 'none' : 'e');
 	// }
-  render() {
-    return (
-		<Router history={browserHistory}>
-			<div className="App">
-				<Gnav loginState={this.state.uid} />
-				<div className="container">
-	        		<DBnav loginState={this.state.uid} url={"/dashboard"} />
-	        		<div className="dashboard-content">
-						<PrivateRoute path="/dashboard" component={Dashboard}/>
-						<Route path="/jobs" name="jobs" component={Jobs}/>
-						<Route path="/login" name="login" component={Login}/>
+	render() {
+		return (
+			<Router history={browserHistory}>
+				<div className="App">
+					<Gnav loginState={this.state.uid} />
+					<div className="container">
+						<DBnav loginState={this.state.uid} url={"/dashboard"} />
+						<div className="dashboard-content">
+							<PrivateRoute path="/dashboard" component={Dashboard} />
+							<PrivateRoute path="/"  name="home" component={Dashboard} />
+							<Route path="/jobs" name="jobs" component={Jobs} />
+							<Route path="/login" name="login" component={Login} />
+						</div>
 					</div>
 				</div>
-			</div>
-		</Router>
-    );
-  }
+			</Router>
+		);
+	}
 }
 
 const PrivateRoute = ({ component: Component, ...rest }) => (
-  <Route {...rest} render={props => (
-    isAuthenticated() ? (
-      <Component {...props}/>
-    ) : (
-      <Redirect to={{
-        pathname: '/login/signin',
-        state: { from: props.location }
-      }}/>
-    )
-  )}/>
+	<Route {...rest} render = { props => (
+		isAuthenticated() ? (
+			<Component {...props} />
+		) : (
+				<Redirect to={{
+					pathname: '/login/signin',
+					state: { from: props.location }
+				}} />
+			)
+	)} />
 )
 export default App;

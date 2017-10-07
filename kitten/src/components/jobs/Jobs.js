@@ -1,6 +1,6 @@
 import React from 'react';
 import { getDatabase, getIdToken } from '../../utils/FirebaseAuthService';
-// import Pagination from '../../utils/Pagination';
+import * as firebase from "firebase";
 import fetchJsonp from 'fetch-jsonp'
 import {Creatable} from 'react-select';
 import 'react-select/dist/react-select.css';
@@ -13,7 +13,6 @@ export default class Jobs extends React.Component {
 	constructor(){
 		console.log("Jobs.constructor()");
 		super();
-		this.perPage = 10
 		this.state = {
 			jobdata: {
 				results:[]
@@ -22,41 +21,61 @@ export default class Jobs extends React.Component {
 			devStatus:{},
 			maxPagerDispNum:0,
             currentPage:1,
+			resultItemLength:10,
 			data: [],
 			offset: 0
 		};
+		// this.perPage = 10;
+		var targetString = null;
+		var url = "";
 		// console.log("Jobs.getIdToken()"+getIdToken());
-
 		this.logChange = this.logChange.bind(this);
+		this.pageChange = this.pageChange.bind(this);
 
-		getDatabase('devStatus',
-			(objDate) => { 
-				// console.log("==========^^============");
-				var obj = [];
-				var objArray = objDate.split(",");
-				objArray.forEach(function(item, index){
-					obj[index] = {value: item, label: item};
-				});
-				// console.log(obj);
-				this.setState({ options: obj })
-			}
-		);
+	}
+
+	componentDidMount() {
+		var that = this;
+		// var urlid = "/" + firebase.auth().currentUser.uid;
+		firebase.database().ref('devStatus').once('value').then(function(snapshot) {
+			
+			var obj = [];
+			var objArray = snapshot.val().split(",");
+			objArray.forEach(function(item, index){
+				obj[index] = {value: item, label: item};
+			});
+			// console.log(obj);
+			that.setState({ options: obj })
+
+		});
+
+		// getDatabase('devStatus',
+		// 	(objDate) => { 
+		// 		// console.log("==========^^============");
+		// 		var obj = [];
+		// 		var objArray = objDate.split(",");
+		// 		objArray.forEach(function(item, index){
+		// 			obj[index] = {value: item, label: item};
+		// 		});
+		// 		// console.log(obj);
+		// 		this.setState({ options: obj })
+		// 	}
+		// );
 		getDatabase('users',
 			(objDate) => { 
-				// console.log("======================");
-				// console.log(objDate);
-				this.setState({ devStatus: objDate.devStatus })
-
-		var TargetString = this.state.devStatus.replace(/\s+/g, "+").toLowerCase();
-		// console.log("@@:"+TargetString);
-		var url = JOBURL_INDEED + '&q='+TargetString+'&l=vancouver%2C+bc&sort=&radius=&st=&jt=&limit=&fromage=&filter=&latlong=1&co=ca&chnl=&userip=1.2.3.4&useragent=Mozilla/%2F4.0(Firefox)&v=2&format=json&start=0';
-		this.getData(url);
+				var objDevState = null;
+				if(objDate != null){
+					objDevState = objDate.devStatus;
+				}
+				// this.setState({ devStatus: objDate.devStatus })
+				this.setState({
+					devStatus: objDevState,
+					jobsearch: objDevState
+				});
+				this.generateURL(objDevState);
 			},
 			getIdToken()
 		);
-	}
-
-	componentWillMount() {
      	// var userData = getUserProfile();
      	// getUserdata();
      	// console.log('userData::', userData);
@@ -88,25 +107,53 @@ export default class Jobs extends React.Component {
  //     	console.log('userData::', userDataFirebase)
 	// }
 
+
+	generateURL(devStatus = null, offset = 0){
+		if(devStatus != null){
+			console.log("@@とてる:");
+			this.targetString = devStatus.replace(/\s+/g, "+").toLowerCase();
+		}
+		console.log("@@:"+this.targetString);
+		// console.log("@@:"+offset);
+		this.url = JOBURL_INDEED + '&q='+this.targetString+'&l=vancouver%2C+bc&sort=&radius=&st=&jt=&limit=&fromage=&filter=&latlong=1&co=ca&chnl=&userip=1.2.3.4&useragent=Mozilla/%2F4.0(Firefox)&v=2&format=json&start='+offset;
+		console.log("indeedurl : " + this.url);
+		this.getData(this.url);
+	}
+		
+		
 	logChange(val) {
-		// console.log("Selected: " + JSON.stringify(val));
-		// console.log("this.perPage: " + this.perPage);
-	    let selected = val.selected + 1;
-	    let offset = Math.ceil(selected * this.perPage);
+
 		this.setState({
 			options: this.state.options
 		});
 
-		var TargetString = this.state.devStatus.replace(/\s+/g, "+").toLowerCase();
-		var url = JOBURL_INDEED + '&q='+TargetString+'&l=vancouver%2C+bc&sort=&radius=&st=&jt=&limit=&fromage=&filter=&latlong=1&co=ca&chnl=&userip=1.2.3.4&useragent=Mozilla/%2F4.0(Firefox)&v=2&format=json&start='+offset;
-		// var words = "";
-		// val.map(function(data, i){
-		// 	words += data.value;
-		// 	if(i !== (val.length - 1)){ words += "+";}
-  //       	return data;
-		// });
-		// url += "&q=" + words;
-		this.getData(url);
+		var urls = "",words = "";
+		val.map(function(data, i){
+			words += data.value;
+			if(i !== (val.length - 1)){ words += "+";}
+		});
+		urls += words;
+
+		console.log("urls:"+urls);
+		this.generateURL(urls, this.state.offset);
+
+		this.setState({
+			jobsearch: val
+		});
+	}
+
+	pageChange(val) {
+
+	    let selected = val.selected;
+		console.log("Selected: " + selected);
+		let offset = Math.ceil(selected * this.state.resultItemLength);
+		console.log("offset: " + offset);
+		
+		if(isNaN(offset)){
+			offset = 0;
+		}
+		this.generateURL(null, offset);
+		console.log(offset + " + offset");
 	}
 
 	getData(url){
@@ -115,9 +162,10 @@ export default class Jobs extends React.Component {
 		  .then(function(response) {
 		    return response.json()
 		  }).then(function(json) {
-		    // console.log(json)
+		    // console.log("結果ながさ："+json.totalResults);
+		
 		    that.setState({ jobdata: json });
-			that.setState({pageCount: Math.ceil(json.totalResults / json.results.length)});
+			that.setState({pageCount: Math.ceil(json.totalResults / that.state.resultItemLength)});
 		  }).catch(function(ex) {
 		    // console.log('parsing failed', ex)
 		  })
@@ -130,7 +178,6 @@ export default class Jobs extends React.Component {
 		// this.setState({maxPagerDispNum:listNum});
 		// console.log('jobdata', jobdata);
 		// console.log('jobdatamaxNum', jobdata.results.length);
-
 
 		// var jobdataLoadCheck = false;
 		// if(jobdata){
@@ -176,9 +223,6 @@ export default class Jobs extends React.Component {
 				<div className="jobs">
 					
 					<div className="jobs-resultnum">{maxNum} results</div>
-					<div className="jobs-box">
-						{jobdatas}
-					</div>
 					<ReactPaginate previousLabel={"previous"}
                        nextLabel={"next"}
                        breakLabel={<a href="">...</a>}
@@ -186,10 +230,13 @@ export default class Jobs extends React.Component {
                        pageCount={this.state.pageCount}
                        marginPagesDisplayed={2}
                        pageRangeDisplayed={5}
-                       onPageChange={this.logChange}
+                       onPageChange={this.pageChange}
                        containerClassName={"pagination"}
                        subContainerClassName={"pages pagination"}
                        activeClassName={"active"} />
+					<div className="jobs-box">
+						{jobdatas}
+					</div>
 				</div>
 			</div>
 		);

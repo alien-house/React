@@ -27,14 +27,14 @@ export default class Index extends React.Component {
 					<Route path={`${match.url}/projects`} component={Projects}/>
 					<Route path={`${match.url}/tasks`} component={Tasks}/>
 					<Route path={`${match.url}/setting`} component={Setting}/>
-				    <Route path={match.url} render={() => (
-					<h3>Please select a topic.</h3>
-				    )}/>
+				    
 				</Switch>
 		);
 	}
 }
-
+{/* <Route path={match.url} render={() => (
+					<h3>Please select a topic.</h3>
+				    )}/> */}
 
 // <CSSTransitionGroup
 // transitionName="fade"

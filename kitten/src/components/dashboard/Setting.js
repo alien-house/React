@@ -43,20 +43,20 @@ export default class Setting extends React.Component {
      	var userData = getUserProfile();
      	// console.log(userData);
 		this.state.userDate = userData;
-		// console.log("objDate.devStatus~~~~~~~~~~~~~~~~~");
-		// console.dir(userData);
+		console.log("objDate.devStatus~~~~~~~~~~~~~~~~~");
+		console.dir(userData);
 		if(userData){
 			console.log("photoURL:",this.state.userDate.photoURL);
-			var imgPromise = getStorage(this.state.userDate.photoURL);
-			imgPromise.then( value => {
-				console.log("Success"); // Success!
-				// console.log(value); // Success!
-				// var img = {userDate:{ userImg: value }};
-				this.setState({ userImg: value });
-				
-			}, reason => {
-				console.log("Error"); // Error!
-			});
+			if(this.state.userDate.photoURL != null){
+				var imgPromise = getStorage(this.state.userDate.photoURL);
+				imgPromise.then( value => {
+					console.log("Success"); // Success!
+					this.setState({ userImg: value });
+					
+				}, reason => {
+					console.log("Error"); // Error!
+				});
+			}
 		}
      	/* ================================ 
      	// select data retrieve
@@ -96,7 +96,10 @@ export default class Setting extends React.Component {
 	handleChange(event) {
     	const target = event.target;
     	const value = target.value;
-    	const name = target.name;
+		const name = target.name;
+		console.log(target);
+		// console.log(value);
+		console.log(name);
 		this.setState({
 			[name]: value
 		});
@@ -119,11 +122,11 @@ export default class Setting extends React.Component {
 		getUserProfile();
 	}
 
+	_crop(){
+		// image in dataUrl
+		// console.log(this.refs.cropper.getCroppedCanvas().toDataURL());
+	}
 
-  _crop(){
-    // image in dataUrl
-    // console.log(this.refs.cropper.getCroppedCanvas().toDataURL());
-  }
 	handleImgChange(event){
 		var files = event.target.files;
 		// console.dir(files[0]);
@@ -203,29 +206,29 @@ export default class Setting extends React.Component {
 							<div className="input-area">
 								<dl className="dl">
 									<dt>Name</dt>
-									<dd><input type="text" name="name" value={this.state.userDate.name} onChange={this.handleChange} /></dd>
+									<dd><input type="text" name="name" value={this.state.name || ''} onChange={this.handleChange} /></dd>
 									<dt>Your Role</dt>
-									<dd><Select name="devStatus" value={this.state.devStatus} options={this.state.options} onChange={this.logChange} /></dd>
+									<dd><Select name="devStatus" value={this.state.devStatus || ''} options={this.state.options} onChange={this.logChange} /></dd>
 									<dt>E-mail</dt>
-									<dd><input type="text" name="email" value={this.state.userDate.email} onChange={this.handleChange} /></dd>
+									<dd><input type="text" name="email" value={this.state.email || ''} onChange={this.handleChange} /></dd>
 									<dt>Bio</dt>
-									<dd><textarea rows="4" cols="50" onChange={this.handleChange}>{this.state.bio}</textarea></dd>
+									<dd><textarea name="bio" rows="4" cols="50" onChange={this.handleChange} value={this.state.bio || ''}></textarea></dd>
 									<dt>Location</dt>
-									<dd><input type="text" name="location" value={this.state.location} onChange={this.handleChange} /></dd>
+									<dd><input type="text" name="location" value={this.state.location || ''} onChange={this.handleChange} /></dd>
 									<dt>URL</dt>
-									<dd><input type="text" name="url" value={this.state.url} onChange={this.handleChange} /></dd>
+									<dd><input type="text" name="url" value={this.state.url || ''} onChange={this.handleChange} /></dd>
 									<dt>Company</dt>
-									<dd><input type="text" name="company" value={this.state.company} onChange={this.handleChange} /></dd>
+									<dd><input type="text" name="company" value={this.state.company || ''} onChange={this.handleChange} /></dd>
 									<dt>Linkedin</dt>
-									<dd><input type="text" name="linkedin" value={this.state.linkedin} onChange={this.handleChange} /></dd>
+									<dd><input type="text" name="linkedin" value={this.state.linkedin || ''} onChange={this.handleChange} /></dd>
 									<dt>Twitter</dt>
-									<dd><input type="text" name="twitter" value={this.state.twitter} onChange={this.handleChange} /></dd>
+									<dd><input type="text" name="twitter" value={this.state.twitter || ''} onChange={this.handleChange} /></dd>
 									<dt>GitHub</dt>
-									<dd><input type="text" name="github" value={this.state.github} onChange={this.handleChange} /></dd>
+									<dd><input type="text" name="github" value={this.state.github || ''} onChange={this.handleChange} /></dd>
 									<dt>Facebook</dt>
-									<dd><input type="text" name="facebook" value={this.state.facebook} onChange={this.handleChange} /></dd>
+									<dd><input type="text" name="facebook" value={this.state.facebook || ''} onChange={this.handleChange} /></dd>
 									<dt>Dribbble</dt>
-									<dd><input type="text" name="dribbble" value={this.state.dribbble} onChange={this.handleChange} /></dd>
+									<dd><input type="text" name="dribbble" value={this.state.dribbble || ''} onChange={this.handleChange} /></dd>
 								</dl>
 								<button id="btn-signIn" onClick={this.handleSubmit}>update</button>
 							</div>

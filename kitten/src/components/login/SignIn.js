@@ -104,7 +104,7 @@ export default class SignIn extends React.Component {
             transitionAppear={true}
           >
 				<div className="form-input-box"><input type="text" name="email" placeholder="E-Mail" className="form-input" value={this.state.value} onChange={this.handleChange} /></div>
-				<div className="form-input-box"><input type="text" name="password" placeholder="Password" className="form-input" value={this.state.value} onChange={this.handleChange} /></div>
+				<div className="form-input-box"><input type="password" name="password" placeholder="Password" className="form-input" value={this.state.value} onChange={this.handleChange} /></div>
 			<button className="btn-submit" onClick={this.handleSubmit}>Login</button>
 
 			</CSSTransitionGroup>
