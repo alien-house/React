@@ -36,7 +36,6 @@ export default class Jobs extends React.Component {
 
 	componentDidMount() {
 		var that = this;
-		// var urlid = "/" + firebase.auth().currentUser.uid;
 		firebase.database().ref('devStatus').once('value').then(function(snapshot) {
 			
 			var obj = [];
@@ -44,38 +43,50 @@ export default class Jobs extends React.Component {
 			objArray.forEach(function(item, index){
 				obj[index] = {value: item, label: item};
 			});
-			// console.log(obj);
 			that.setState({ options: obj })
 
 		});
 
-		// getDatabase('devStatus',
-		// 	(objDate) => { 
-		// 		// console.log("==========^^============");
-		// 		var obj = [];
-		// 		var objArray = objDate.split(",");
-		// 		objArray.forEach(function(item, index){
-		// 			obj[index] = {value: item, label: item};
-		// 		});
-		// 		// console.log(obj);
-		// 		this.setState({ options: obj })
-		// 	}
-		// );
-		getDatabase('users',
-			(objDate) => { 
+		var user = firebase.auth().currentUser;
+		var urlid = "";
+		if (user != null) {
+			urlid = "users/" + user.uid;
+			firebase.database().ref(urlid).once('value').then(function(snapshot) {
+				var objDate = snapshot.val();
+				console.log("@@objDevState:"+objDevState);
 				var objDevState = null;
 				if(objDate != null){
 					objDevState = objDate.devStatus;
 				}
 				// this.setState({ devStatus: objDate.devStatus })
-				this.setState({
+				// console.log("@@objDevState:"+objDevState);
+				that.setState({
 					devStatus: objDevState,
 					jobsearch: objDevState
 				});
-				this.generateURL(objDevState);
-			},
-			getIdToken()
-		);
+				that.generateURL(objDevState);
+			});
+		}else{
+			this.generateURL("");
+		}
+
+
+
+		// getDatabase('users',
+		// 	(objDate) => { 
+		// 		var objDevState = null;
+		// 		if(objDate != null){
+		// 			objDevState = objDate.devStatus;
+		// 		}
+		// 		// this.setState({ devStatus: objDate.devStatus })
+		// 		this.setState({
+		// 			devStatus: objDevState,
+		// 			jobsearch: objDevState
+		// 		});
+		// 		this.generateURL(objDevState);
+		// 	},
+		// 	getIdToken()
+		// );
      	// var userData = getUserProfile();
      	// getUserdata();
      	// console.log('userData::', userData);
