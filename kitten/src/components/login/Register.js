@@ -1,6 +1,9 @@
 import React from 'react';
 import { register } from '../../utils/FirebaseAuthService';
 import { CSSTransitionGroup } from 'react-transition-group';
+import {
+	Redirect
+} from 'react-router-dom'
 
 // const styles = {}
 // styles.fill = {
@@ -17,7 +20,9 @@ export default class Register extends React.Component {
 
 		this.handleChange = this.handleChange.bind(this);
 		this.handleSubmit = this.handleSubmit.bind(this);
-		this.state = {};
+		this.state = {
+			redirectToReferrer: false
+		};
 	}
 	// only once
 	componentDidMount(){
@@ -61,12 +66,28 @@ export default class Register extends React.Component {
 			alert('Please enter a password.');
 			return;
 		}
-		register(email,password);
+		let registerPromise = register(email,password);
+		registerPromise.then( value => {
+			console.log("Success");
+			this.setState({ redirectToReferrer: true })
+			
+		}, reason => {
+			console.log("Error"); // Error!
+		});
+
+
 		event.preventDefault();
 
 	}
 
 	render() {
+		const { from } = this.props.location.state || { from: { pathname: '/' } }
+		const { redirectToReferrer } = this.state
+		if (redirectToReferrer) {
+			return (
+			  <Redirect to={from}/>
+			)
+		}
 		return (
           <CSSTransitionGroup
           	component="div"

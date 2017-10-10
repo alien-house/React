@@ -36,7 +36,15 @@ export default class Setting extends React.Component {
 				photoURL:"",
 				emailVerified:"",
 				uid:"",
-				bio:""
+				bio:"",
+				location:"",
+				url:"",
+				company:"",
+				linkedin:"",
+				twitter:"",
+				github:"",
+				facebook:"",
+				dribbble:""
 			},
 			devStatus:"",
 			userImg:"",
@@ -82,6 +90,14 @@ export default class Setting extends React.Component {
 					const newState = {...that.state.userDate};
 					newState['devStatus'] = objDate.devStatus;
 					newState['bio'] = objDate.bio;
+					newState['location'] = objDate.location;
+					newState['url'] = objDate.url;
+					newState['company'] = objDate.company;
+					newState['linkedin'] = objDate.linkedin;
+					newState['twitter'] = objDate.twitter;
+					newState['github'] = objDate.github;
+					newState['facebook'] = objDate.facebook;
+					newState['dribbble'] = objDate.dribbble;
 					that.setState({
 						userDate : newState
 					});
@@ -181,8 +197,13 @@ export default class Setting extends React.Component {
 			userDate: newState
 		});
 	}
+	_crop(){
+				// image in dataUrl
+				// console.log(this.refs.cropper.getCroppedCanvas().toDataURL());
+	}
 
 	uploadCropImg(event){
+		var that = this;
 		// console.dir(this.refs.cropper.getCroppedCanvas());
 		let imgfile = this.refs.cropper.getCroppedCanvas().toDataURL();
 		let imgbase64 = imgfile.split(',');
@@ -194,7 +215,7 @@ export default class Setting extends React.Component {
 			    userDate = {
 			      photoURL : metadata.fullPath
 			    });
-			this.setState({isShowingModal: false});
+				that.setState({isShowingModal: false});
 		});
 		getUserProfile();
 	}
@@ -252,17 +273,17 @@ export default class Setting extends React.Component {
 			}
 			console.log("bio:" + this.state.userDate.bio);
 			
-			var dataObj = {
+			let dataObj = {
 				devStatus: this.state.userDate.devStatus,
-				bio:this.state.userDate.bio
-				// location:this.state.userDate.location,
-				// url:this.state.userDate.url,
-				// company:this.state.userDate.company,
-				// linkedin:this.state.userDate.linkedin,
-				// twitter:this.state.userDate.twitter,
-				// github:this.state.userDate.github,
-				// facebook:this.state.userDate.facebook,
-				// dribbble:this.state.userDate.dribbble
+				bio:this.state.userDate.bio,
+				location:this.state.userDate.location,
+				url:this.state.userDate.url,
+				company:this.state.userDate.company,
+				linkedin:this.state.userDate.linkedin,
+				twitter:this.state.userDate.twitter,
+				github:this.state.userDate.github,
+				facebook:this.state.userDate.facebook,
+				dribbble:this.state.userDate.dribbble
 			};
 			// updateDatabase(dataObj);
 			firebase.database().ref('users/' + user.uid).set(dataObj);

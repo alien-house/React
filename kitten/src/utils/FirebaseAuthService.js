@@ -42,10 +42,29 @@ export function login(email, password, setRedirectToRefFnc) {
 // }
 
 export function register(email, password) {
-  firebase.auth().createUserWithEmailAndPassword(email, password).then(function(user) {
+  return firebase.auth().createUserWithEmailAndPassword(email, password)
+    .then(function(user) {
         // var user = firebase.auth().currentUser;
       // console.log(user);
+
+			let dataObj = {
+				devStatus: "",
+				bio:"",
+				location:"",
+				url:"",
+				company:"",
+				linkedin:"",
+				twitter:"",
+				github:"",
+				facebook:"",
+				dribbble:""
+			};
+      firebase.database().ref('users/' + user.uid).set(dataObj);
+
       alert('Your account has created!');
+
+
+
         // logUser(user); // Optional
     },function(error) {
       // Handle Errors here.
