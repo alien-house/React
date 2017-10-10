@@ -246,6 +246,7 @@ export default class Setting extends React.Component {
 		};
 		// var devStatus = this.state.devStatus;
 		var user = firebase.auth().currentUser;
+		let funcArray = [];
 		/* for this structure
 		{
 		  displayName: "Jane Q. User",
@@ -255,19 +256,25 @@ export default class Setting extends React.Component {
 		// console.log("updateUserProfile---------------");
 		// console.dir(user);
 		if(user){
-			user.updateProfile(userObj).then(function() {
-			// Update successful.
-				alert("has saved!");
-			}, function(error) {
-			// An error happened.
-			});
+
+			funcArray.push(this.updateProfileFunc(user, userObj));
+
+			// user.updateProfile(userObj).then(function() {
+			// // Update successful.
+			// 	alert("has saved!");
+			// }, function(error) {
+			// // An error happened.
+			// });
+
 			if(this.emailaddress != this.state.userDate.email){
 				// console.dir( "this.state.userDate.email:"+this.state.userDate.email);
-				user.updateEmail(this.state.userDate.email).then(function() {
-					// Update successful.
-				}).catch(function(error) {
-					// An error happened.
-				});
+				// user.updateEmail(this.state.userDate.email).then(function() {
+				// 	// Update successful.
+				// }).catch(function(error) {
+				// 	// An error happened.
+				// });
+				// updateEmailFunc(user,this.state.userDate.email);
+				funcArray.push(this.updateEmailFunc(user,this.state.userDate.email));
 			}else{
 				console.log("email is same");
 			}
@@ -285,10 +292,37 @@ export default class Setting extends React.Component {
 				facebook:this.state.userDate.facebook,
 				dribbble:this.state.userDate.dribbble
 			};
-			// updateDatabase(dataObj);
-			firebase.database().ref('users/' + user.uid).set(dataObj);
+			// updateUserDatabaseFunc(user, dataObj);
+			// firebase.database().ref('users/' + user.uid).set(dataObj);
+			funcArray.push(this.updateUserDatabaseFunc(user, dataObj));
+
+			Promise.all(funcArray).then(function(){
+				alert("has saved!");
+			  });
+
 		}
 	}
+
+	updateProfileFunc(user, userObj){
+		return user.updateProfile(userObj).then(function() {
+			// Update successful.
+			}, function(error) {
+			// An error happened.
+			});
+	}
+	updateEmailFunc(user, email){
+		return user.updateEmail(email).then(function() {
+			// Update successful.
+		}).catch(function(error) {
+			// An error happened.
+		});
+	}
+	updateUserDatabaseFunc(user, dataObj){
+		return firebase.database().ref('users/' + user.uid).set(dataObj);
+	}
+
+
+
 
 	// getOptions(input, callback) {
 	//   setTimeout(function() {
