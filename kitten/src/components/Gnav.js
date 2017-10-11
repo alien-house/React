@@ -17,6 +17,7 @@ export default class Gnav extends Component {
         <nav className="gnav">
           <ul>
             <li><Link to="/home">Home</Link></li>
+            <li><Link to="/events">Events</Link></li>
             <li><Link to="/jobs">Jobs</Link></li>
           </ul>
           <ul>
