@@ -17,6 +17,7 @@ export default class Events extends React.Component {
 			eventsdata: []
 		}
 		var eventbritUrl = "";
+
 	}
 
 	componentDidMount() {
@@ -66,27 +67,43 @@ export default class Events extends React.Component {
 		//     // console.log('parsing failed', ex)
 		//   })
 	}
+	getShortDesc(fulltxt){
+		let str = fulltxt.slice(0, 150) + "...";
+		return str;
+	}
+	setTimeFormat(timetxt){
+		let date = new Date(timetxt);
+		var options = {  
+			weekday: "long", year: "numeric", month: "short",  
+			day: "numeric", hour: "2-digit", minute: "2-digit"  
+		};  
+		return date.toLocaleTimeString("en-us", options).toString();
+		// return date.toString();
+	}
 
 	render(selectProps) {
 		
 		const eventsdata = this.state.eventsdata;
+		let that = this;
 		console.dir(eventsdata);
-			const eventsdatas = eventsdata.map(function(data, i){
-				return (
-					<section key={i} className="unit">
-					<a href={data.url} className="unit-anc" target="_blank">
-						<figure className="img"><img src={data.logo.url} /></figure>
-							
-						<div>
-							<p className="title">{data.name.text}</p>
-							<p className="desc">{data.description.text}</p>
-						</div>
+		const eventsdatas = eventsdata.map(function(data, i){
+			return (
+				<section key={i} className="unit unit--events">
+				
+				<a href={data.url} className="unit-anc" target="_blank">
+					<figure className="img"><img src={data.logo.url} /></figure>
 						
-						<time className="time">{data.start.local}</time>
-					</a>
-					</section>
-				);
-			})
+					<div className="unit-desc">
+						<time className="time">{that.setTimeFormat(data.start.local)}</time>
+						<p className="title">{data.name.text}</p>
+						<p className="desc">{that.getShortDesc(data.description.text)}</p>
+					</div>
+					
+				</a>
+				</section>
+			);
+		})
+
 		return (
 			<div className="contents-wrap">
 				<h1 className="contents-title">Events</h1>
